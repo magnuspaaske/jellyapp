@@ -5,11 +5,21 @@
   "main": "index.js",
   "author": "Magnus Petersen-Paaske",
   "license": "MIT",
+  "scripts": {
+    "prepare": "install-peers"
+  },
   "peerDependencies": {
     "@sendgrid/mail": "^6.4.0",
     "bcrypt": "^3.0.7",
     "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
     "bookshelf": "^1.0.1",
-    "cors": "^2.8.5"
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express-fileupload": "^1.1.6",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "install-peers-cli": "^2.1.1"
   }
 }
