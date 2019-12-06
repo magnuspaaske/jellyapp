@@ -1,5 +1,11 @@
 console.log('Jelly index hello world')
 
-module.exports.cors = require('./src/cors')
-module.exports.inputParser = require('./src/inputParser')
-module.exports.originChecker = require('./src/originChecker')
+module.exports = {
+    // Basic set up
+    cors:           require('./src/cors'),
+    inputParser:    require('./src/inputParser'),
+    originChecker:  require('./src/originChecker'),
+
+    // Nice functions
+    slack:          require('./src/slack'),
+}
