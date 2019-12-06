@@ -8,4 +8,7 @@ module.exports = {
 
     // Nice functions
     slack:          require('./src/slack'),
+
+    // Frontend
+    pugFns:         require('./src/pug-fns')
 }
