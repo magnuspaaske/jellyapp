@@ -5,7 +5,16 @@ const bookshelf = require('./bookshelf')
 
 
 module.exports = (modelName, tableName, props, staticProps) => {
-    const model = bookshelf.model(modelName, Object.assign({}, {
+    const model = bookshelf.model(modelName, Object.assign({
+        serialize (options = {}) {
+            // Delete sensitive fields from output
+            const attributes = bookshelf.Model.prototype.serialize.call(this, options)
+            if (typeof this.sensitiveFields === 'function') {
+                return _.omit(attributes, this.sensitiveFields())
+            }
+            return attributes
+        },
+    }, {
         tableName,
         hasTimestamps: true,
         ...props
