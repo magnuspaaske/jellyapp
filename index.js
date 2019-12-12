@@ -1,7 +1,9 @@
-console.log('Jelly index hello world')
+// Main exports from module
 
 module.exports = {
     // Basic set up
+    app:            require('./src/app'),
+
     cors:           require('./src/cors'),
     inputParser:    require('./src/inputParser'),
     originChecker:  require('./src/originChecker'),
