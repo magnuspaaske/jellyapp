@@ -6,6 +6,15 @@ module.exports = {
     inputParser:    require('./src/inputParser'),
     originChecker:  require('./src/originChecker'),
 
+    APIError:       require('./src/apiError'),
+
+    // Bookshelf stuff + models/collections (to be extended)
+    jellyKnex:      require('./src/knex'),
+    bookshelf:      require('./src/bookshelf'),
+
+    baseModel:      require('./src/baseModel'),
+    baseCollection: require('./src/baseCollection'),
+
     // Nice functions
     slack:          require('./src/slack'),
 
