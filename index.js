@@ -1,5 +1,7 @@
 // Main exports from module
 
+const handlers = require('./src/handlers')
+
 module.exports = {
     // Basic set up
     app:                require('./src/app'),
@@ -9,6 +11,12 @@ module.exports = {
     originChecker:      require('./src/originChecker'),
 
     APIError:           require('./src/apiError'),
+
+    handler:            handlers.handler,
+    apiHandler:         handlers.apiHandler,
+    pageHandler:        handlers.pageHandler,
+
+    checkFieldsExist:   require('./src/checkFieldsExist'),
 
     // Bookshelf stuff + models/collections (to be extended)
     jellyKnex:          require('./src/knex'),
