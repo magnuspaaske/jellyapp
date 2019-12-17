@@ -25,9 +25,18 @@ module.exports = {
     baseModel:          require('./src/baseModel'),
     baseCollection:     require('./src/baseCollection'),
 
+    // Sessions + users
     sessionMiddleware:  require('./src/sessionMiddleware'),
+    auth:               require('./src/auth'),
+
     baseUserModel:      require('./src/baseUserModel'),
     baseSessionModel:   require('./src/baseSessionModel'),
+
+    sessionController:  require('./src/sessionController'),
+    userController:     require('./src/userController'),
+
+    sessionRouter:      require('./src/sessionRouter'),
+    userRouter:         require('./src/userRouter'),
 
     // Nice functions
     slack:              require('./src/slack'),
