@@ -2,7 +2,6 @@
 
 const bodyParser    = require('body-parser')
 const cookieParser  = require('cookie-parser')
-// const cors          = require('cors')
 const fileupload    = require('express-fileupload')
 
 

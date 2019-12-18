@@ -1,9 +1,11 @@
 // Module to allow CORS requests
 
-const _ = require('lodash')
+const _         = require('lodash')
+const cors      = require('cors')
 // TODO: Make settings object to finetune CORS behavior
 
 module.exports = (app) => {
+    app.use(cors())
     app.use((req, res, next) => {
         const origin = req.headers.origin
 
@@ -33,6 +35,6 @@ module.exports = (app) => {
                 return
             }
         }
-        res.status(403).send(`CORS error. Origin not allowed: ${req.headers.origin}`)
+        res.status(403).send(`CORS error. Origin not allowed: ${origin}`)
     })
 }
