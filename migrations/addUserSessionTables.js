@@ -7,7 +7,7 @@ exports.up = (knex, Promise) => {
         table.increments('id').primary()
         table.string('email').unique()
         table.string('password', 1023)
-        table.boolean('is_admin')
+        table.boolean('is_admin').defaultTo(false)
 
         table.timestamps()
     }).then(() => {
