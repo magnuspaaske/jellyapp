@@ -68,6 +68,33 @@ const makeUserController = ((User) => {
     })
 
 
+    // Make new user
+    controller.createUser = apiHandler((req, res) => {
+        const fields = ['email', 'password']
+        if (!checkFieldsExist(fields, req.body)) {
+            return APIError.promise(400, 'email or password not set')
+        }
+
+        return new User({
+            email: req.body.email,
+        }).fetch({
+            require: false,
+        }).then(user => {
+            if (user) {
+                throw new APIError(400, 'User already exists with provided email')
+            }
+
+            return new User({
+                email: req.body.email
+            }).setPassword(req.body.password)
+        }).then(user => user.save())
+        .then(user => {
+            res.status(201)
+            res.send(user)
+        })
+    })
+
+
     // Make admin wether from making first user or as admin
     const makeAdmin = (req, res) => {
         const fields = ['email', 'password']

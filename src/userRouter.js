@@ -18,6 +18,11 @@ const makeUserRouter = (auth, userController) => {
         userController.getCurrentUser
     )
 
+    // Make new user
+    router.post('/users',
+        userController.createUser
+    )
+
     // Update user
     router.put('/users/me',
         auth(),
