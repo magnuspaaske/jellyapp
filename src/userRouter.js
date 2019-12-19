@@ -38,7 +38,9 @@ const makeUserRouter = (auth, userController) => {
 
     // Make new user
     router.post('/users/make-admin',
-        auth(),
+        auth({
+            admin: true,
+        }),
         userController.createNewAdmin,
     )
 

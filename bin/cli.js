@@ -7,7 +7,7 @@ const path = require('path')
 
 const cwd = process.cwd()
 
-commander.version('0.3.2')
+commander.version('0.3.3')
 
 commander
     .command('makeUserMigration')
