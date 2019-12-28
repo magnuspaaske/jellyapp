@@ -1,4 +1,4 @@
-// Method to send messages toslack
+// Method to send messages to slack
 
 const Promise = require('bluebird')
 const request = require('request')
