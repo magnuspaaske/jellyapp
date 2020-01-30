@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-const _ = require('lodash')
+// const _ = require('lodash')
+require('colors')
+
 const commander = require('commander')
 
 const setupUsersSessions = require('./setupUsersSessions')
@@ -13,7 +15,7 @@ commander
     .command('init')
     .description('Sets up a basic project')
     .action(() => {
-        console.log('Creating the basic project')
+        console.log('Setting up a Jelly Project')
         initProject()
     })
 
