@@ -8,8 +8,9 @@ const commander = require('commander')
 const setupUsersSessions = require('./setupUsersSessions')
 const initProject = require('./initProject')
 
+const pkg = require('../package.json')
 
-commander.version('0.3.3')
+commander.version(pkg.version)
 
 commander
     .command('init')

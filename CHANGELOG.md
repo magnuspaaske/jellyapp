@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+- Updated documentation
+- Made boilerplate for new projects
+- Updated the user adding CLI method so it also adds the right files 
+
 ## 0.3.3
 - Bugfix: ensured only admins can make admins
 
