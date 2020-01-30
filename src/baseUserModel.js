@@ -12,6 +12,10 @@ const baseUserModel = (props, staticProps) => {
             return this.hasMany('Session')
         },
 
+        isAdmin () {
+            return this.get('is_admin')
+        },
+
         // Fields that shouldn't be send to the user
         sensitiveFields () {
             const arr = [
@@ -82,7 +86,7 @@ const baseUserModel = (props, staticProps) => {
 
     if ((typeof staticProps) === 'object') {
         _(staticProps).each((fun, key) => {
-            userModel[key] = fun
+            UserModel[key] = fun
         })
     }
 

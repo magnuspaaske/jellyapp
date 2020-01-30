@@ -88,10 +88,10 @@ const makeUserController = ((User) => {
                 email: req.body.email
             }).setPassword(req.body.password)
         }).then(user => user.save())
-        .then(user => {
-            res.status(201)
-            res.send(user)
-        })
+            .then(user => {
+                res.status(201)
+                res.send(user)
+            })
     })
 
 

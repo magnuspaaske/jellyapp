@@ -26,7 +26,7 @@ const copyFile = ({
         recursive: true,
     })
 
-    let file = fs.readFileSync(origin)
+    let file = fs.readFileSync(origin, 'utf8')
 
     _(settings).each((val, key) => {
         const snakeKey = _.snakeCase(key).toUpperCase()
@@ -36,4 +36,25 @@ const copyFile = ({
     fs.writeFileSync(destination, file)
 }
 
-module.exports = copyFile
+const copyFiles = ({
+    files = null,
+    settings = {}
+} = {}) => {
+    if (typeof files !== 'object') {
+        const txt = 'files must be set as an object before copyFiles works'
+        throw new Error(txt)
+    }
+
+    _(files).each((val, key) => {
+        copyFile({
+            originLocation: `boilerplate/${val}`,
+            destinationLocation: key,
+            settings,
+        })
+    })
+}
+
+module.exports = {
+    copyFile,
+    copyFiles,
+}

@@ -33,7 +33,7 @@ const app = jelly.app()
 
 //- JELLY: session
 
-//- JEllY: /session
+//- JELLY: /session
 
 
 //- JELLY: routes

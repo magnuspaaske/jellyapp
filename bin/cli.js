@@ -20,8 +20,8 @@ commander
     })
 
 commander
-    .command('makeUserMigration')
-    .description('Adds the migration file for the user and session tables')
+    .command('addUserSessions')
+    .description('Adds everything needed for adding users and sessions')
     .action(() => {
         console.log('Creating migration for user and session tables')
         setupUsersSessions()
