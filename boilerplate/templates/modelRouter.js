@@ -16,7 +16,7 @@ const {
     auth,
 } = require('jellyapp')
 
-const router = require('express').Router
+const router = require('express').Router()
 
 
 // Import models needed
