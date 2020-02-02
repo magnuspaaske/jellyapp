@@ -30,7 +30,7 @@ const copyFile = ({
     let file = fs.readFileSync(origin, 'utf8')
 
     _(settings).each((val, key) => {
-        const snakeKey = `{${_.snakeCase(key).toUpperCase()}}`
+        const snakeKey = `${_.snakeCase(key).toUpperCase()}`
         file = file.replace(new RegExp(`{${snakeKey}}`, 'g'), val)
     })
 
