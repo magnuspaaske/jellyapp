@@ -1,6 +1,7 @@
 // Copy a file from the boilerplate into the project
 
 const _ = require('lodash')
+const moment = require('moment')
 const fs = require('fs')
 const path = require('path')
 
@@ -29,12 +30,34 @@ const copyFile = ({
     let file = fs.readFileSync(origin, 'utf8')
 
     _(settings).each((val, key) => {
-        const snakeKey = _.snakeCase(key).toUpperCase()
+        const snakeKey = `{${_.snakeCase(key).toUpperCase()}}`
         file = file.replace(new RegExp(`{${snakeKey}}`, 'g'), val)
     })
 
     fs.writeFileSync(destination, file)
 }
+
+
+const addMigration = ({
+    migrationTmpName = null,
+    migrationName = null,
+    settings = null,
+} = {}) => {
+    if (!migrationName) {
+        const txt = 'migrationName must be defined for addMigration to run'
+        throw new Error(txt)
+    }
+
+    if (!migrationTmpName) migrationTmpName = migrationName
+    const now = moment().format('YYYYMMDDhhmmss')
+
+    copyFile({
+        originLocation: `migrations/${migrationTmpName}.js`,
+        destinationLocation: `migrations/${now}_${migrationName}.js`,
+        settings,
+    })
+}
+
 
 const copyFiles = ({
     files = null,
@@ -56,5 +79,6 @@ const copyFiles = ({
 
 module.exports = {
     copyFile,
+    addMigration,
     copyFiles,
 }

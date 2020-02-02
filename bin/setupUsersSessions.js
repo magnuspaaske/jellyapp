@@ -1,18 +1,14 @@
 // Add user/session tables to a project
 
-const moment = require('moment')
-
 const fs = require('fs')
 const path = require('path')
 
-const { copyFile, copyFiles } = require('./copyFileToProject')
+const { copyFiles, addMigration } = require('./copyFileToProject')
 const insertLinesInFile = require('./insertLinesInFile')
 
 const addMigrationFile = () => {
-    const now = moment().format('YYYYMMDDhhmmss')
-    copyFile({
-        originLocation: 'migrations/addUserSessionTables.js',
-        destinationLocation: `migrations/${now}_addUserSessionTables.js`,
+    addMigration({
+        migrationName: 'addUserSessionTables'
     })
 }
 

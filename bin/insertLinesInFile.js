@@ -22,6 +22,9 @@ const insertLinesInFile = ({
     const file = fs.readFileSync(fileLoc, 'utf8')
     let fileLines = file.split(/\r?\n/)
 
+    const topLine = '// Lines inserted with the jelly cli, edit freely'
+    lines = `\n${topLine}\n${lines.trim()}`
+
     const firstLineIndex = fileLines.indexOf(`//- JELLY: ${symbol}`)
     const lastLineIndex = fileLines.indexOf(`//- JELLY: /${symbol}`)
 
@@ -31,12 +34,23 @@ const insertLinesInFile = ({
     }
 
     // Inserting lines
-    fileLines.splice(lastLineIndex, 0, lines)
+    // fileLines.splice(lastLineIndex, 0, lines)
 
     // Writing new file
     let newFile = ''
     _(fileLines).each((line, i) => {
-        newFile += `${line}\n`
+        if (i === lastLineIndex -1) {
+            if (line === '') {
+                newFile += `${lines}`
+            } else {
+                newFile += `${line}\n${lines}`
+            }
+        } else {
+            newFile += `${line}`
+        }
+        if (i < fileLines.length - 1) {
+            newFile += '\n'
+        }
     })
 
     fs.writeFileSync(fileLoc, newFile)
