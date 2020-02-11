@@ -6,7 +6,7 @@
 
 // A migration to add tables for {MODELNAME_PLURAL}
 
-exports.up = (knex, Promise) => {
+exports.up = (knex) => {
 
     // Create table
     return knex.schema.createTable('{MODELNAME_PLURAL}', table => {
@@ -16,6 +16,6 @@ exports.up = (knex, Promise) => {
     })
 }
 
-exports.down = (knex, Promise) => {
+exports.down = (knex) => {
     return knex.schema.dropTable('{MODELNAME_PLURAL}')
 }

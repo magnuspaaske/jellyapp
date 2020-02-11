@@ -1,6 +1,6 @@
 // A migration to add tables for users and sessions
 
-exports.up = (knex, Promise) => {
+exports.up = (knex) => {
 
     return knex.schema.createTable('users', table => {
         // Users
@@ -21,7 +21,7 @@ exports.up = (knex, Promise) => {
     })
 }
 
-exports.down = (knex, Promise) => {
+exports.down = (knex) => {
     return knex.schema.dropTable('sessions').then(() => {
         return knex.schema.dropTable('users')
     })
