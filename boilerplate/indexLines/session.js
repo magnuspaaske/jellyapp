@@ -3,3 +3,5 @@ const User = require('./app/models/userModel')
 const auth = jelly.auth
 const sessionController = jelly.sessionController(User, Session)
 const userController = jelly.userController(User)
+
+app.use(jelly.sessionMiddleware(Session))
