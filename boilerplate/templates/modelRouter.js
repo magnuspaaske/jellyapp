@@ -35,8 +35,14 @@ const {MODELNAME_UNCAP}Auth = [auth(), apiHandler((req, res, next) => {
         throw new APIError(404, '{MODELNAME_CAP} not found')
     })
     .then({MODELNAME_UNCAP} => {
-        req.{MODELNAME_UNCAP} = {MODELNAME_UNCAP}
-        return next()
+        // Checking if user can access resource (admin or owner)
+        // Jelly @todo: Update CLA logic
+        if ({MODELNAME_UNCAP}.get('user_id') === req.user.id || req.user.isAdmin()) {
+            req.{MODELNAME_UNCAP} = {MODELNAME_UNCAP}
+            return next()
+        }
+
+        throw new APIError(404, '{MODELNAME_CAP} not found')
     })
 })]
 
