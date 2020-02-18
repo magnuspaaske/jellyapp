@@ -6,28 +6,29 @@ const handler = (sendError) => {
     return (fn, context) => {
         // The callback function when a controller encounters an error
         return (req, res, next) => {
-            return fn.call(context, req, res, next)
-                .catch((err) => {
-                    if (err.name === 'APIError') {
-                        if (err.data) {
-                            sendError(res, err.code, {
-                                message:    err.title,
-                                data:       err.data
-                            })
-                        } else {
-                            sendError(res, err.code, err.title)
-                        }
-                    } else if (
-                        process.env.NODE_ENV !== 'development' &&
-                        !res.headersSent
-                    ) {
-                        sendError(res, 500)
+            try {
+                fn.call(context, req, res, next)
+            } catch (err) {
+                if (err.name === 'APIError') {
+                    if (err.data) {
+                        sendError(res, err.code, {
+                            message:    err.title,
+                            data:       err.data
+                        })
                     } else {
-                        console.log('Caught error')
-                        console.error(err)
-                        throw err
+                        sendError(res, err.code, err.title)
                     }
-                })
+                } else if (
+                    process.env.NODE_ENV !== 'development' &&
+                    !res.headersSent
+                ) {
+                    sendError(res, 500)
+                } else {
+                    console.log('Caught error')
+                    console.error(err)
+                    throw err
+                }
+            }
         }
     }
 }
