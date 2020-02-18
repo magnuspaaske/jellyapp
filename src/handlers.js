@@ -1,14 +1,11 @@
 // A wrapper to handle requests
 
-
 const handler = (sendError) => {
     // The function that wraps the functions
     return (fn, context) => {
         // The callback function when a controller encounters an error
         return (req, res, next) => {
-            try {
-                fn.call(context, req, res, next)
-            } catch (err) {
+            const handleError = (err) => {
                 if (err.name === 'APIError') {
                     if (err.data) {
                         sendError(res, err.code, {
@@ -28,6 +25,13 @@ const handler = (sendError) => {
                     console.error(err)
                     throw err
                 }
+            }
+
+            try {
+                return fn.call(context, req, res, next)
+                    .catch(handleError)
+            } catch (err) {
+                handleError(err)
             }
         }
     }
