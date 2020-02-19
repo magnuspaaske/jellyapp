@@ -1,38 +1,33 @@
 // A wrapper to handle requests
+const Promise = require('bluebird')
 
 const handler = (sendError) => {
     // The function that wraps the functions
     return (fn, context) => {
         // The callback function when a controller encounters an error
         return (req, res, next) => {
-            const handleError = (err) => {
-                if (err.name === 'APIError') {
-                    if (err.data) {
-                        sendError(res, err.code, {
-                            message:    err.title,
-                            data:       err.data
-                        })
+            return Promise.resolve(fn.call(context, req, res, next))
+                .catch((err) => {
+                    if (err.name === 'APIError') {
+                        if (err.data) {
+                            sendError(res, err.code, {
+                                message:    err.title,
+                                data:       err.data
+                            })
+                        } else {
+                            sendError(res, err.code, err.title)
+                        }
+                    } else if (
+                        process.env.NODE_ENV !== 'development' &&
+                        !res.headersSent
+                    ) {
+                        sendError(res, 500)
                     } else {
-                        sendError(res, err.code, err.title)
+                        console.log('Caught error')
+                        console.error(err)
+                        throw err
                     }
-                } else if (
-                    process.env.NODE_ENV !== 'development' &&
-                    !res.headersSent
-                ) {
-                    sendError(res, 500)
-                } else {
-                    console.log('Caught error')
-                    console.error(err)
-                    throw err
-                }
-            }
-
-            try {
-                return fn.call(context, req, res, next)
-                    .catch(handleError)
-            } catch (err) {
-                handleError(err)
-            }
+                })
         }
     }
 }
