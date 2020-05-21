@@ -50,14 +50,6 @@ const initProject = () => {
     _(scripts).each((val, key) => {
         projectPkg.scripts[key] = val
     })
-    console.log('Setting up git commit hooks')
-    const husky = {
-        'pre-commit': 'yalc check',
-    }
-    if (typeof projectPkg.husky !== 'object') projectPkg.husky = {}
-    _(husky).each((val, key) => {
-        projectPkg.husky[key] = val
-    })
 
     console.log('Writing new package.json')
     fs.writeFileSync(`${cwd}/package.json`, JSON.stringify(projectPkg, null, 2))
