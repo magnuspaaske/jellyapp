@@ -63,18 +63,28 @@ const copyFiles = ({
     files = null,
     settings = {}
 } = {}) => {
-    if (typeof files !== 'object') {
+    const root = settings.root
+
+    if (Array.isArray(files)) {
+        files.map(file => {
+            copyFile({
+                originLocation: `boilerplate/${file}`,
+                destinationLocation: `${root ? root + '/' : ''}${file}`,
+                settings,
+            })
+        })
+    } else if (typeof files === 'object') {
+        _(files).each((val, key) => {
+            copyFile({
+                originLocation: `boilerplate/${val}`,
+                destinationLocation: `${root ? root + '/' : ''}${key}`,
+                settings,
+            })
+        })
+    } else {
         const txt = 'files must be set as an object before copyFiles works'
         throw new Error(txt)
     }
-
-    _(files).each((val, key) => {
-        copyFile({
-            originLocation: `boilerplate/${val}`,
-            destinationLocation: key,
-            settings,
-        })
-    })
 }
 
 module.exports = {

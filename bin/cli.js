@@ -5,6 +5,7 @@ require('colors')
 
 const commander = require('commander')
 
+const addClient = require('./addClient')
 const addModel = require('./addModel')
 const setupUsersSessions = require('./setupUsersSessions')
 const initProject = require('./initProject')
@@ -20,6 +21,20 @@ commander
     .action(() => {
         console.log('Setting up a Jelly Project')
         initProject()
+    })
+
+commander
+    .command('addClient')
+    .alias('addFrontend')
+    .description('Adds a frontend to a project')
+    .option('--stand-alone', 'use jelly to set up a stand alone frontend', false)
+    .action((opts) => {
+        if (opts.standAlone) {
+            console.log('Setting up stand alone client')
+        } else {
+            console.log('Setting up frontend for project')
+        }
+        addClient(opts.standAlone)
     })
 
 
