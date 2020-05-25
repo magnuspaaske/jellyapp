@@ -1,6 +1,6 @@
 {
   "name": "jellyapp",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "A mini framework with a build system for websites and backends built on top of bookshelf and gulp",
   "main": "index.js",
   "author": "Magnus Petersen-Paaske",
