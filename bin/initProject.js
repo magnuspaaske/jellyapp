@@ -22,7 +22,7 @@ const initProject = () => {
             '.env.sample':      '.env.sample',
             '.env':             '.env.sample',
             '.editorconfig':    '.editorconfig',
-            '.eslint.yml':      '.eslint.yml'
+            '.eslintrc.yml':    '.eslintrc.yml',
         }
     })
     console.log('Copied boilerplate files for the project')
