@@ -49,7 +49,7 @@ const addMigration = ({
     }
 
     if (!migrationTmpName) migrationTmpName = migrationName
-    const now = moment().format('YYYYMMDDhhmmss')
+    const now = moment().format('YYYYMMDDHHmmss')
 
     copyFile({
         originLocation: `migrations/${migrationTmpName}.js`,

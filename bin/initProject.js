@@ -5,28 +5,24 @@ const { execSync } = require('child_process')
 const fs = require('fs')
 // const path = require('path')
 
+
 const pkg = require('../package.json')
 const { copyFiles } = require('./copyFileToProject')
 
 const cwd = process.cwd()
 
-
 const initProject = () => {
     console.log('Copying boilerplate ...')
     // Copy root files
     copyFiles({
-        files: [
-            'index.js',
-            'knexfile.js',
-            '.env.sample',
-            '.editorconfig',
-            '.eslint.yml',
-        ]
-    })
-    copyFiles({
         files: {
-            '.gitignore':   '.gitignore.sample',
-            '.env':         '.env.sample',
+            'index.js':         'index.js',
+            'knexfile.js':      'knexfile.js',
+            '.gitignore':       '.gitignore.sample',
+            '.env.sample':      '.env.sample',
+            '.env':             '.env.sample',
+            '.editorconfig':    '.editorconfig',
+            '.eslintrc.yml':    '.eslintrc.yml',
         }
     })
     console.log('Copied boilerplate files for the project')
