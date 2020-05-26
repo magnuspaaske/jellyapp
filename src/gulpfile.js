@@ -37,10 +37,12 @@ if (process.env.NODE_ENV === 'development' && fs.existsSync('.env')) {
 }
 
 
-const cssPipeline = require('./grunt/pipeline').cssFilesToInject.map(path => {
+const pipeline = `${process.cwd}/pipeline.js`
+
+const cssPipeline = pipeline.cssFilesToInject.map(path => {
     return 'tmp/styles/' + path
 })
-const jsPipeline = require('./grunt/pipeline').jsFilesToInject.map(path => {
+const jsPipeline = pipeline.jsFilesToInject.map(path => {
     return 'tmp/scripts/' + path
 })
 

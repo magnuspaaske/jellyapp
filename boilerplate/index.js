@@ -30,6 +30,15 @@ console.log('--- --- --- --- --- --- --- --- --- --- --- ---'.grey)
 // Making app
 const app = jelly.app()
 
+// Send static files from /public
+app.use(
+    express.static(__dirname + '/public', {
+        setHeaders: (res) => {
+            res.setHeader('Access-Control-Allow-Origin', '*')
+        }
+    })
+)
+
 
 //- JELLY: session
 

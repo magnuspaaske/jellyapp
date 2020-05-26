@@ -22,9 +22,9 @@ const addClient = (standAlone = false) => {
             'scripts/misc.coffee',
             'styles/general.sass',
         ].map((f) => `client/${f}`),
-        // settings: {
-        //     root: 'client'
-        // }
+    })
+    copyFiles({
+        files: ['pipeline.js']
     })
 
     const layoutFiles = [
@@ -39,9 +39,6 @@ const addClient = (standAlone = false) => {
         // Put layout in the client folder etc
         copyFiles({
             files: layoutFiles,
-            // settings: {
-            //     root: 'client'
-            // }
         })
         copyFiles({
             files: [
