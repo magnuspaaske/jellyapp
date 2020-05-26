@@ -49,6 +49,7 @@ commander
 
 commander
     .command('addModel <modelName>')
+    .alias('addModel')
     .description('Adding a model to the project')
     .option('--no-crud', 'don\'t add router to new model', false)
     .option('--plural <plural>', 'name for plural version of model', null)
