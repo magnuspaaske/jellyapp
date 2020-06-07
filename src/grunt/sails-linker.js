@@ -2,19 +2,17 @@
  * Link CSS and JS assets in the 'layout' file
  */
 
-// const pipeline = require(`${process.cwd()}/pipeline.js`)
-const pipeline = '../../../../../pipeline.js'
-
 module.exports = function(grunt) {
 
+    grunt.setCorrectDir()
+    const pipeline = require(`${process.cwd()}/pipeline.js`)
+
     // Activate when ready to go
-    var prodCss = function () {
-        var file = 'public/styles.min-[a-z0-9][a-z0-9]*.css'
-        return [file]
+    prodCss = () => {
+        var file = ['public/styles.min-[a-z0-9][a-z0-9]*.css']
     }
-    var prodJs = function () {
-        var file = 'public/scripts.min-[a-z0-9][a-z0-9]*.js'
-        return [file]
+    prodJs = () => {
+        return ['public/scripts.min-[a-z0-9][a-z0-9]*.js']
     }
 
     grunt.config.set('sails-linker', {

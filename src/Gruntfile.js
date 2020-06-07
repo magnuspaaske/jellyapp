@@ -1,59 +1,19 @@
+// Import
+const bushcaster = require('./grunt/bushcaster')
+const sailsLinker = require('./grunt/sails-linker')
+
+
 module.exports = (grunt) => {
 
-    // Load the include-all library in order to require all of our grunt
-    // configurations and task registrations dynamically.
-    let includeAll;
-    try {
-        includeAll = require('include-all');
-    } catch (e0) {
-        console.error('Could not find `include-all` module.');
-        console.error('Skipping grunt tasks...');
-        console.error('To fix this, please run:');
-        console.error('npm install include-all --save`');
-        console.error();
-
-        grunt.registerTask('default', []);
-        return;
-    }
-
-    /**
-     * Loads Grunt configuration modules from the specified
-     * relative path. These modules should export a function
-     * that, when run, should either load/configure or register
-     * a Grunt task.
-     */
-    loadTasks = (relPath) => {
-        return includeAll({
-            dirname: require('path').resolve(__dirname, relPath),
-            filter: /(.+)\.js$/
-        }) || {};
-    }
-
-    /**
-     * Invokes the function from a Grunt configuration module with
-     * a single argument - the `grunt` object.
-     */
-    invokeConfigFn = (tasks) => {
-        for (var taskName in tasks) {
-            if (tasks.hasOwnProperty(taskName)) {
-                tasks[taskName](grunt);
-            }
+    grunt.setCorrectDir = () => {
+        // Change to correct dir
+        if (/node_modules\/jellyapp\/src$/.test(process.cwd())) {
+            process.chdir('../../../')
         }
     }
 
-    // Load task functions
-    var taskConfigurations = loadTasks('./grunt/config'),
-        registerDefinitions = loadTasks('./grunt/register');
+    grunt.setCorrectDir()
 
-    // (ensure that a default task exists)
-    if (!registerDefinitions.default) {
-        registerDefinitions.default = (grunt) => {
-            grunt.registerTask('default', []);
-        };
-    }
-
-    // Run task functions to configure Grunt.
-    invokeConfigFn(taskConfigurations);
-    invokeConfigFn(registerDefinitions);
-
-};
+    bushcaster(grunt)
+    sailsLinker(grunt)
+}

@@ -9,7 +9,6 @@
     "prepare": "install-peers"
   },
   "peerDependencies": {
-    "@sendgrid/mail": "^6.4.0",
     "bcrypt": "^3.0.7",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
@@ -23,7 +22,8 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.4",
     "pg": "^7.14.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "showdown": "^1.9.1"
   },
   "frontendDependencies": {
     "@sendgrid/mail": "^7.1.0",
@@ -40,7 +40,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^2.0.0",
     "include-all": "^4.0.3",
     "jquery": "^3.5.0",
     "js-yaml": "^3.13.1",

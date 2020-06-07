@@ -14,7 +14,7 @@ const pug       = require('gulp-pug')
 const concat    = require('gulp-concat')
 
 const cleanCss      = require('gulp-clean-css')
-const uglify        = require('gulp-uglify')
+const uglify        = require('gulp-uglify-es').default
 const rename        = require('gulp-rename')
 const clean         = require('gulp-clean')
 const replace       = require('gulp-replace')
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'development' && fs.existsSync('.env')) {
 }
 
 
-const pipeline = `${process.cwd}/pipeline.js`
+const pipeline = require(`${process.cwd()}/pipeline.js`)
 
 const cssPipeline = pipeline.cssFilesToInject.map(path => {
     return 'tmp/styles/' + path
@@ -107,13 +107,6 @@ gulp.task('assets-copy-prod', () => {
     return gulp
         .src('client/assets/**/*.*')
         .pipe(gulp.dest('tmp/copies/assets/'))
-})
-
-
-// Blog hbs copy
-gulp.task('hbs-copy', () => {
-    return gulp.src('client/blog_pug/**/*.hbs')
-        .pipe(gulp.dest('blog_theme/'))
 })
 
 
@@ -245,34 +238,6 @@ gulp.task('pug-prod', () => {
 })
 
 
-// Pug Blog
-gulp.task('pug-blog', () => {
-    return gulp.src('client/blog_pug/**/*.pug')
-        .pipe(pug({
-            pretty: false,
-            client: false,
-            locals: loadData(),
-        }))
-        .pipe(rename({
-            extname: '.hbs'
-        }))
-        .pipe(gulp.dest('blog_theme/'))
-})
-
-gulp.task('pug-blog-prod', () => {
-    return gulp.src('client/blog_pug/**/*.pug')
-        .pipe(pug({
-            pretty: false,
-            client: false,
-            locals: loadData(),
-        }))
-        .pipe(rename({
-            extname: '.hbs'
-        }))
-        .pipe(gulp.dest('tmp/'))
-})
-
-
 // Replace file paths pug production
 gulp.task('pug-link-images', () => {
     const hashes = JSON.parse(fs.readFileSync('./tmp/assets-hashes.json', {
@@ -288,36 +253,6 @@ gulp.task('pug-link-images', () => {
     return gulpObj.pipe(gulp.dest('public/'))
 })
 
-
-// Replace file paths blog production
-gulp.task('pug-blog-link-assets', () => {
-    const hashes = JSON.parse(fs.readFileSync('./tmp/assets-hashes.json'), {
-        encoding: 'utf-8',
-    })
-
-    let gulpObj = gulp.src('tmp/**/*.hbs')
-
-    _(hashes).each((val, key) => {
-        gulpObj = gulpObj.pipe(replace(key, `${process.env.CACHE_HOST || ''}${val}`))
-    })
-
-    return gulpObj
-        .pipe(replace('<link rel="stylesheet" href="/styles', '<link rel="stylesheet" href="/assets/styles'))
-        .pipe(replace('<script type="text/javascript" src="/scripts', '<script type="text/javascript" src="/assets/scripts'))
-        .pipe(gulp.dest('blog_theme'))
-})
-
-
-// Copy assets from public to blog
-gulp.task('pug-blog-copy-assets', () => {
-    return gulp
-        .src([
-            './public/assets/**/*.*',
-            './public/scripts.min-*.js',
-            './public/styles.min-*.css',
-        ])
-        .pipe(gulp.dest('./blog_theme/assets'))
-})
 
 // Concat
 gulp.task('concat-css', () => {
@@ -359,7 +294,7 @@ gulp.task('minify-js', () => {
 
 
 // Function to quickly deal with copying npm dependencies
-const copyNpm = (location, type, prod, filename) => {
+const copyNpm = (location, type, prod) => {
     let dest = ''
     // Check for prod
     if (prod) {
@@ -373,45 +308,26 @@ const copyNpm = (location, type, prod, filename) => {
         dest += 'styles/dependencies'
     }
 
-    if (filename) {
-        return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
-            .pipe(rename((path) => {
-                path.basename = filename
-            }))
-            .pipe(gulp.dest(dest))
-    } else {
-        return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
-            .pipe(gulp.dest(dest))
-    }
+    return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
+        .pipe(gulp.dest(dest))
+}
 
+const copyNpmList = (prod) => {
+    console.log('copyNpmList')
+    console.log(Object.keys(pipeline.npmFiles))
+
+    const files = Object.keys(pipeline.npmFiles).map(key => {
+        return () => copyNpm(key, pipeline.npmFiles[key], prod)
+    })
+
+    return gulp.parallel(...files)
 }
 
 // Copy over dependencies for development
-gulp.task('copy-npm-dependencies', gulp.parallel(
-    // Add jquery
-    () => copyNpm('jquery/dist/jquery.js', 'js'),
-    // Add lodash
-    () => copyNpm('lodash/lodash.js', 'js'),
-    // Add chart.js
-    () => copyNpm('chart.js/dist/Chart.js', 'js'),
-    () => copyNpm('chart.js/dist/Chart.css', 'css'),
-    // Add moment
-    () => copyNpm('moment/moment.js', 'js'),
-))
-
+gulp.task('copy-npm-dependencies', copyNpmList(false))
 
 // Copy over dependencies for production
-gulp.task('copy-npm-dependencies-prod', gulp.parallel(
-    // Add jquery
-    () => copyNpm('jquery/dist/jquery.js', 'js', true),
-    // Add lodash
-    () => copyNpm('lodash/lodash.js', 'js', true),
-    // Add chart.js
-    () => copyNpm('chart.js/dist/Chart.js', 'js'),
-    () => copyNpm('chart.js/dist/Chart.css', 'css'),
-    // Add moment
-    () => copyNpm('moment/moment.js', 'js'),
-))
+gulp.task('copy-npm-dependencies-prod', copyNpmList(true))
 
 
 // Grunt tasks
@@ -431,13 +347,12 @@ gruntTasks.map((task) => {
             // Get the right name for the task
             task.replace('grunt-', '')
         ], {
-            gruntfile: 'Gruntfile.js'
+            gruntfile: `${process.cwd()}/node_modules/jellyapp/src/Gruntfile.js`
         }, () => {
             cb()
         })
     })
 })
-
 
 
 
@@ -450,20 +365,14 @@ gulp.task('default', gulp.series(
         'js-copy',
         'assets-copy',
         'root-copy',
-        // 'hbs-copy',
         'copy-npm-dependencies',
         'pug-tmps',
     ),
     gulp.series(
         // Linking sheets and styles
-        // 'pug-blog-copy-assets',
         'grunt-sails-linker:devCss',
         'grunt-sails-linker:devJs',
     ),
-    // gulp.parallel(
-    //     'pug-blog',
-    //     // 'pug-static',
-    // ),
     () => {
         // Watching SASS (including relinking sheets if needed)
         const sassWatch = gulp.watch([
@@ -519,22 +428,11 @@ gulp.task('default', gulp.series(
             // gulp.parallel('pug-static'),
         ))
 
-        // gulp.watch('client/data.yaml', gulp.series(
-        //     'pug-static',
-        // ))
-
-        // gulp.watch('client/**/*.pug', gulp.series(
-        //     // 'pug-static',
-        //     'pug-tmps',
-        //     'pug-blog',
-        // ))
-
         gulp.watch([
             'client/assets/*',
             'client/assets/**/*',
         ], gulp.series(
             'assets-copy',
-            // 'pug-blog-copy-assets',
         ))
     }
 ))
@@ -564,7 +462,6 @@ gulp.task('build', gulp.series(
         'pug-tmps-prod',
         'root-copy',
         'assets-copy-prod',
-        // 'hbs-copy',
         'copy-npm-dependencies-prod',
     ),
     gulp.parallel(
@@ -589,14 +486,7 @@ gulp.task('build', gulp.series(
         'grunt-sails-linker:prodCss',
         'grunt-sails-linker:prodJs',
     ),
-    // gulp.parallel(
-    //     // Build pug
-    //     'pug-prod',
-    //     // 'pug-blog-prod',
-    //     // 'pug-blog-copy-assets',
-    // ),
     gulp.series(
         'pug-link-images',
-        'pug-blog-link-assets',
     )
 ))

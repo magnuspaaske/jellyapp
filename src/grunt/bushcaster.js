@@ -11,7 +11,7 @@ module.exports = (grunt) => {
                 hashLength: 14,
                 noProcess: true,
                 requirejs: false,
-                onComplete: (rawmap, files) => {
+                onComplete: (rawmap = {}, files) => {
                     const map = {}
 
                     // Where we update the references
