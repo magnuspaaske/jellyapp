@@ -8,10 +8,10 @@ module.exports = function(grunt) {
     const pipeline = require(`${process.cwd()}/pipeline.js`)
 
     // Activate when ready to go
-    prodCss = () => {
-        var file = ['public/styles.min-[a-z0-9][a-z0-9]*.css']
+    const prodCss = () => {
+        return ['public/styles.min-[a-z0-9][a-z0-9]*.css']
     }
-    prodJs = () => {
+    const prodJs = () => {
         return ['public/scripts.min-[a-z0-9][a-z0-9]*.js']
     }
 
