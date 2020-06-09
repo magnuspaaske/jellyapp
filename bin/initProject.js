@@ -53,7 +53,6 @@ const initProject = () => {
 
     console.log('Writing new package.json')
     fs.writeFileSync(`${cwd}/package.json`, JSON.stringify(projectPkg, null, 2))
-
 }
 
 

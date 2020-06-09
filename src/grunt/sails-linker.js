@@ -7,14 +7,6 @@ module.exports = function(grunt) {
     grunt.setCorrectDir()
     const pipeline = require(`${process.cwd()}/pipeline.js`)
 
-    // Activate when ready to go
-    const prodCss = () => {
-        return ['public/styles.min-[a-z0-9][a-z0-9]*.css']
-    }
-    const prodJs = () => {
-        return ['public/scripts.min-[a-z0-9][a-z0-9]*.js']
-    }
-
     grunt.config.set('sails-linker', {
         devJs: {
             options: {
@@ -24,7 +16,7 @@ module.exports = function(grunt) {
                 appRoot: 'public/'
             },
             files: {
-                './views/**/*.pug': pipeline.jsFilesToInject.map(path => {
+                './**/*.pug': pipeline.jsFilesToInject.map(path => {
                     return 'public/scripts/' + path
                 }),
             }
@@ -37,7 +29,7 @@ module.exports = function(grunt) {
                 appRoot: 'public/'
             },
             files: {
-                './views/**/*.pug': prodJs()
+                './**/*.pug': ['public/scripts.min-[a-z0-9][a-z0-9]*.js']
             }
         },
         devCss: {
@@ -48,7 +40,7 @@ module.exports = function(grunt) {
                 appRoot: 'public/'
             },
             files: {
-                './views/**/*.pug': pipeline.cssFilesToInject.map(path => {
+                './**/*.pug': pipeline.cssFilesToInject.map(path => {
                     return 'public/styles/' + path
                 }),
             }
@@ -61,7 +53,7 @@ module.exports = function(grunt) {
                 appRoot: 'public/'
             },
             files: {
-                './views/**/*.pug': prodCss()
+                './**/*.pug': ['public/styles.min-[a-z0-9][a-z0-9]*.css']
             }
         }
     })

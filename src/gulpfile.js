@@ -18,7 +18,7 @@ const uglify        = require('gulp-uglify-es').default
 const rename        = require('gulp-rename')
 const clean         = require('gulp-clean')
 const replace       = require('gulp-replace')
-const modifyFile    = require('gulp-modify-file')
+// const modifyFile    = require('gulp-modify-file')
 
 const grunt     = require('grunt')
 
@@ -163,42 +163,43 @@ gulp.task('js-copy-prod', () => {
         .pipe(gulp.dest('tmp/scripts'))
 })
 
-// Pug dynamic
-gulp.task('pug-tmps', () => {
-    return gulp
-        .src('./client/scripts/templates/*.pug')
-        .pipe(pug({
-            pretty: false,
-            client: true,
-            compileDebug: false,
-            inlineRuntimeFunctions: false,
-        }))
-        .pipe(modifyFile((content, path, file) => {
-            let filename
-            filename = path.replace('/client/scripts/templates/', '')
-            filename = filename.replace('.js', '')
-            return `this["pug"]["${filename}"] = ${content}`
-        }))
-        .pipe(gulp.dest('public/scripts/templates/'))
-})
-
-// Pug dynamic production
-gulp.task('pug-tmps-prod', () => {
-    return gulp.src('./client/scripts/templates/*.pug')
-        .pipe(pug({
-            pretty: false,
-            client: true,
-            compileDebug: false,
-            inlineRuntimeFunctions: false,
-        }))
-        .pipe(modifyFile((content, path, file) => {
-            let filename
-            filename = path.replace('/client/scripts/templates/', '')
-            filename = filename.replace('.js', '')
-            return `this["pug"]["${filename}"] = ${content}`
-        }))
-        .pipe(gulp.dest('tmp/scripts/templates/'))
-})
+// Dynamic pug is untested, so taken out
+// // Pug dynamic
+// gulp.task('pug-tmps', () => {
+//     return gulp
+//         .src('./client/scripts/templates/*.pug')
+//         .pipe(pug({
+//             pretty: false,
+//             client: true,
+//             compileDebug: false,
+//             inlineRuntimeFunctions: false,
+//         }))
+//         .pipe(modifyFile((content, path, file) => {
+//             let filename
+//             filename = path.replace('/client/scripts/templates/', '')
+//             filename = filename.replace('.js', '')
+//             return `this["pug"]["${filename}"] = ${content}`
+//         }))
+//         .pipe(gulp.dest('public/scripts/templates/'))
+// })
+//
+// // Pug dynamic production
+// gulp.task('pug-tmps-prod', () => {
+//     return gulp.src('./client/scripts/templates/*.pug')
+//         .pipe(pug({
+//             pretty: false,
+//             client: true,
+//             compileDebug: false,
+//             inlineRuntimeFunctions: false,
+//         }))
+//         .pipe(modifyFile((content, path, file) => {
+//             let filename
+//             filename = path.replace('/client/scripts/templates/', '')
+//             filename = filename.replace('.js', '')
+//             return `this["pug"]["${filename}"] = ${content}`
+//         }))
+//         .pipe(gulp.dest('tmp/scripts/templates/'))
+// })
 
 
 
@@ -313,9 +314,6 @@ const copyNpm = (location, type, prod) => {
 }
 
 const copyNpmList = (prod) => {
-    console.log('copyNpmList')
-    console.log(Object.keys(pipeline.npmFiles))
-
     const files = Object.keys(pipeline.npmFiles).map(key => {
         return () => copyNpm(key, pipeline.npmFiles[key], prod)
     })
@@ -357,16 +355,18 @@ gruntTasks.map((task) => {
 
 
 // Watch changes
+gulp.task('make-css', gulp.parallel('sass', 'css-copy'))
+gulp.task('make-js', gulp.parallel('js-copy', 'coffee'))
+
 gulp.task('default', gulp.series(
     gulp.parallel(
-        'sass',
-        'css-copy',
-        'coffee',
-        'js-copy',
+        'make-css',
+        'make-js',
         'assets-copy',
         'root-copy',
         'copy-npm-dependencies',
-        'pug-tmps',
+        // 'pug-tmps',
+        'pug-static',
     ),
     gulp.series(
         // Linking sheets and styles
@@ -380,78 +380,57 @@ gulp.task('default', gulp.series(
             'client/styles/**/*.scss',
             'client/styles/**/*.css',
         ])
-        sassWatch.on('change', gulp.parallel(
-            'sass',
-            'css-copy',
-        ))
+        sassWatch.on('change', gulp.series('make-css'))
         sassWatch.on('unlink', gulp.series(
-            gulp.parallel('css-clean'),
-            gulp.parallel(
-                'sass',
-                'css-copy',
-            ),
-            gulp.parallel('grunt-sails-linker:devCss'),
-            // gulp.parallel('pug-static'),
+            'css-clean',
+            'make-css',
+            'grunt-sails-linker:devCss',
+            'pug-static',
         ))
         sassWatch.on('add', gulp.series(
-            gulp.parallel(
-                'css-copy',
-                'sass',
-            ),
-            gulp.parallel('grunt-sails-linker:devCss'),
-            // gulp.parallel('pug-static'),
+            'make-css',
+            'grunt-sails-linker:devCss',
+            'pug-static',
         ))
 
+        // Watching JS
         const jsWatch = gulp.watch([
             'client/scripts/**/*.coffee',
             'client/scripts/**/*.js',
         ])
-        jsWatch.on('change', gulp.parallel(
-            'coffee',
-            'js-copy',
-        ))
+        jsWatch.on('change', gulp.series('make-js'))
         jsWatch.on('unlink', gulp.series(
-            gulp.parallel('js-clean'),
-            gulp.parallel(
-                'coffee',
-                'js-copy',
-            ),
-            gulp.parallel('grunt-sails-linker:devJs'),
-            // gulp.parallel('pug-static'),
+            'js-clean',
+            'make-js',
+            'grunt-sails-linker:devJs',
+            'pug-static',
         ))
         jsWatch.on('add', gulp.series(
-            gulp.parallel(
-                'coffee',
-                'js-copy',
-            ),
-            gulp.parallel('grunt-sails-linker:devJs'),
-            // gulp.parallel('pug-static'),
+            'make-js',
+            'grunt-sails-linker:devJs',
+            'pug-static',
         ))
 
+        // Assets watch
         gulp.watch([
             'client/assets/*',
             'client/assets/**/*',
         ], gulp.series(
             'assets-copy',
         ))
+
+        // Pug watch
+        const pugWatch = gulp.watch(['client/**/*.pug'])
+        pugWatch.on('change', gulp.series('pug-static'))
+        // pugWatch.on('add', gulp.series('pug-static'))
+        // pugWatch.on('unlink', gulp.series('pug-static'))
     }
 ))
 
 
 // Build tasks
-gulp.task('build-css', gulp.series(
-    gulp.parallel(
-        'sass-prod',
-        'css-copy-prod',
-    ),
-))
-
-gulp.task('build-js', gulp.series(
-    gulp.parallel(
-        'coffee-prod',
-        'js-copy-prod',
-    ),
-))
+gulp.task('build-css', gulp.parallel('sass-prod', 'css-copy-prod'))
+gulp.task('build-js', gulp.parallel('coffee-prod', 'js-copy-prod'))
 
 // Build task
 gulp.task('build', gulp.series(
@@ -459,10 +438,11 @@ gulp.task('build', gulp.series(
         // Compile all js, css, copy over assets
         'build-css',
         'build-js',
-        'pug-tmps-prod',
-        'root-copy',
         'assets-copy-prod',
+        'root-copy',
         'copy-npm-dependencies-prod',
+        // 'pug-tmps-prod',
+        'pug-prod',
     ),
     gulp.parallel(
         'concat-js',

@@ -6,7 +6,10 @@ const fs = require('fs')
 // const path = require('path')
 
 const pkg = require('../package.json')
-const { copyFiles } = require('./copyFileToProject')
+const {
+    copyFile,
+    copyFiles,
+} = require('./copyFileToProject')
 
 const cwd = process.cwd()
 
@@ -19,7 +22,7 @@ const addClient = (standAlone = false) => {
     copyFiles({
         files: [
             'root_files/robots.txt',
-            'scripts/misc.coffee',
+            'scripts/main.coffee',
             'styles/general.sass',
         ].map((f) => `client/${f}`),
     })
@@ -39,12 +42,13 @@ const addClient = (standAlone = false) => {
         // Put layout in the client folder etc
         copyFiles({
             files: layoutFiles,
+            settings: {
+                root: 'client'
+            }
         })
-        copyFiles({
-            files: [
-                'pages/home.pug'
-            ],
-            destinationLocation: 'assets_static_pug/home.pug',
+        copyFile({
+            originLocation: 'boilerplate/pages/home.pug',
+            destinationLocation: 'client/static_pug/index.pug',
         })
     } else {
         // Put layout + templates in special folders for that
@@ -54,10 +58,8 @@ const addClient = (standAlone = false) => {
                 root: 'views'
             },
         })
-        copyFiles({
-            files: [
-                'pages/home.pug'
-            ],
+        copyFile({
+            originLocation: 'boilerplate/pages/home.pug',
             destinationLocation: 'views/pages/home.pug',
         })
     }
@@ -68,6 +70,7 @@ const addClient = (standAlone = false) => {
     console.log('Installed Yarn dependencies')
 
     // TODO: Sharpen section
+    // TODO: Make own function
     // NOTE: Copyed from initProject
     // Adding scripts to package
     const projectPkg = JSON.parse(fs.readFileSync(`${cwd}/package.json`), 'utf8')
@@ -84,6 +87,9 @@ const addClient = (standAlone = false) => {
     _(scripts).each((val, key) => {
         projectPkg.scripts[key] = val
     })
+
+    console.log('Writing new package.json')
+    fs.writeFileSync(`${cwd}/package.json`, JSON.stringify(projectPkg, null, 2))
 }
 
 module.exports = addClient
