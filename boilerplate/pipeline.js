@@ -4,11 +4,8 @@
   */
 
 module.exports.cssFilesToInject = [ // Order of CSS files
-    // 'dependencies/*.css',
-    // 'libs/*.css',
-    // Various needed
-    // 'grid.css',
-    // 'general.css',
+    // 'dependencies/jellyblocks.css',
+    'dependencies/*.css',
     // All
     '**/*.css',
 ]
@@ -17,6 +14,8 @@ module.exports.jsFilesToInject = [ // Order of JS files
     'env/**/*.js', // Load env before all else
 
     'dependencies/jquery.js',
+    'dependencies/moment.js',
+    'dependencies/lodash.js',
 
     // Load other dependencies/libs
     'dependencies/**/*.js',
@@ -37,4 +36,7 @@ module.exports.npmFiles = {
     'lodash/lodash.js': 'js',
     // Add moment
     'moment/moment.js': 'js',
+    // Add Jellyblocks
+    // 'jellyblocks/jellyblocks.js': 'js',
+    // 'jellyblocks/jellyblocks.css': 'css',
 }

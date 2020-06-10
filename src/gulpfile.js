@@ -366,12 +366,12 @@ gulp.task('default', gulp.series(
         'root-copy',
         'copy-npm-dependencies',
         // 'pug-tmps',
-        'pug-static',
     ),
     gulp.series(
         // Linking sheets and styles
         'grunt-sails-linker:devCss',
         'grunt-sails-linker:devJs',
+        'pug-static',
     ),
     () => {
         // Watching SASS (including relinking sheets if needed)
@@ -420,7 +420,10 @@ gulp.task('default', gulp.series(
         ))
 
         // Pug watch
-        const pugWatch = gulp.watch(['client/**/*.pug'])
+        const pugWatch = gulp.watch([
+            'client/data.yaml',
+            'client/**/*.pug',
+        ])
         pugWatch.on('change', gulp.series('pug-static'))
         // pugWatch.on('add', gulp.series('pug-static'))
         // pugWatch.on('unlink', gulp.series('pug-static'))
@@ -442,7 +445,6 @@ gulp.task('build', gulp.series(
         'root-copy',
         'copy-npm-dependencies-prod',
         // 'pug-tmps-prod',
-        'pug-prod',
     ),
     gulp.parallel(
         'concat-js',
@@ -456,7 +458,7 @@ gulp.task('build', gulp.series(
         'minify-css',
         'minify-js',
     ),
-    gulp.series(
+    gulp.parallel(
         // Link cache busted assets to css/js
         'grunt-bushcaster:prodJs',
         'grunt-bushcaster:prodCss',
@@ -465,8 +467,8 @@ gulp.task('build', gulp.series(
         // Link assets to layout layout files
         'grunt-sails-linker:prodCss',
         'grunt-sails-linker:prodJs',
-    ),
-    gulp.series(
+        // Pug
+        'pug-prod',
         'pug-link-images',
     )
 ))
