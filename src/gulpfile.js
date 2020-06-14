@@ -458,12 +458,10 @@ gulp.task('build', gulp.series(
         'minify-css',
         'minify-js',
     ),
-    gulp.parallel(
+    gulp.series(
         // Link cache busted assets to css/js
         'grunt-bushcaster:prodJs',
         'grunt-bushcaster:prodCss',
-    ),
-    gulp.series(
         // Link assets to layout layout files
         'grunt-sails-linker:prodCss',
         'grunt-sails-linker:prodJs',
