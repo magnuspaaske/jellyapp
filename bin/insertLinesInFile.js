@@ -4,9 +4,6 @@ const _ = require('lodash')
 const fs = require('fs')
 
 
-const cwd = process.cwd()
-
-
 const insertLinesInFile = ({
     fileLocation = null,
     lines = null,
@@ -18,7 +15,7 @@ const insertLinesInFile = ({
     }
 
     // Load file to be edited
-    const fileLoc = `${cwd}/${fileLocation}`
+    const fileLoc = `${process.cwd()}/${fileLocation}`
     const file = fs.readFileSync(fileLoc, 'utf8')
     let fileLines = file.split(/\r?\n/)
 

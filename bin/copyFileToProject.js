@@ -5,8 +5,6 @@ const moment = require('moment')
 const fs = require('fs')
 const path = require('path')
 
-const cwd = process.cwd()
-
 
 const copyFile = ({
     originLocation = null,
@@ -19,7 +17,7 @@ const copyFile = ({
         throw new Error(txt)
     }
 
-    const destination = `${cwd}/${destinationLocation}`
+    const destination = `${process.cwd()}/${destinationLocation}`
     const origin = path.join(__dirname, `../${originLocation}`)
 
     // Ensuring directory is created
