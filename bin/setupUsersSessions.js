@@ -45,15 +45,8 @@ const editIndexFile = () => {
 
 
 module.exports = () => {
-    console.log('Adding migration file')
+    console.log('Setting up user sessions ...')
     addMigrationFile()
-    console.log('Added migration file ...')
-
-    console.log('Adding files')
     addFiles()
-    console.log('Added files')
-
-    console.log('Editing index file')
     editIndexFile()
-    console.log('Edited index file')
 }

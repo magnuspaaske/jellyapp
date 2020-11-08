@@ -3,6 +3,8 @@
 // const _ = require('lodash')
 require('colors')
 
+const fs = require('fs')
+
 const commander = require('commander')
 
 const addClient = require('./addClient')
@@ -16,12 +18,25 @@ commander.version(pkg.version)
 
 
 commander
-    .command('init')
+    .command('init <folder>')
     .description('Sets up a basic project')
-    .action(() => {
+    .action((folder) => {
         console.log('Setting up a Jelly Project')
-        initProject()
+        // Switch folder
+        if (folder === '.') {
+            initProject()
+        } else if (fs.existsSync(`./${folder}`)) {
+            console.log(`./${folder} folder already exists`.red)
+        } else {
+            fs.mkdirSync(`./${folder}`)
+                process.chdir(`./${folder}`)
+            console.log('current folder')
+            console.log(process.cwd())
+            initProject()
+        }
+
     })
+
 
 commander
     .command('addClient')
@@ -35,6 +50,16 @@ commander
             console.log('Setting up frontend for project')
         }
         addClient(opts.standAlone)
+    })
+
+
+commander
+    .command('addBackend')
+    .description('Adds a backend to a project')
+    .option('--use-auth', 'use the authentication module', true)
+    .action((opts) => {
+        console.log('backend setup')
+        console.log(opts)
     })
 
 

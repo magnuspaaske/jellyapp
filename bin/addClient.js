@@ -1,21 +1,24 @@
 // Set up a client for a project
 
-const _ = require('lodash')
-const { execSync } = require('child_process')
-const fs = require('fs')
-// const path = require('path')
+const fs =          require('fs')
+const yaml =        require('js-yaml')
 
-const pkg = require('../package.json')
 const {
     copyFile,
     copyFiles,
 } = require('./copyFileToProject')
-
-const cwd = process.cwd()
+const {
+    installYarnDeps,
+    updatePkgScripts,
+} = require('./lib')
+const {
+    readJellyYaml,
+    writeJellyYaml,
+} = require('../src/jellyYaml')
 
 
 const addClient = (standAlone = false) => {
-    console.log('Copying boilerplate project ...')
+    console.log('Copying boilerplate for frontend ...')
 
     // Copying main files
 
@@ -36,7 +39,7 @@ const addClient = (standAlone = false) => {
         'layout',
     ].map((f) => `layouts/${f}.pug`)
 
-    console.log('Adding client files')
+    console.log('Adding client files ...')
 
     if (standAlone) {
         // Put layout in the client folder etc
@@ -45,6 +48,11 @@ const addClient = (standAlone = false) => {
             settings: {
                 root: 'client'
             }
+        })
+        copyFiles({
+            files: [
+                'client/root_files/_redirects'
+            ]
         })
         copyFile({
             originLocation: 'boilerplate/pages/home.pug',
@@ -64,32 +72,46 @@ const addClient = (standAlone = false) => {
         })
     }
 
-    console.log('Installing yarn dependencies');
-    let frontendDeps = Object.keys(pkg.frontendDependencies)
-    execSync('yarn add ' + frontendDeps.join(' '))
-    console.log('Installed Yarn dependencies')
+    console.log('Installing yarn dependencies for frontend ...')
+    installYarnDeps([
+        '@sendgrid/mail',
+        'grunt',
+        'grunt-bushcaster',
+        'grunt-sails-linker',
+        'gulp',
+        'gulp-clean',
+        'gulp-clean-css',
+        'gulp-coffee',
+        'gulp-concat',
+        'gulp-modify-file',
+        'gulp-pug',
+        'gulp-rename',
+        'gulp-replace',
+        'gulp-sass',
+        'gulp-uglify-es',
+        'include-all',
+        'jquery',
+        'js-yaml',
+        'pug',
+        'replace',
+        'showdown',
+    ])
 
-    // TODO: Sharpen section
-    // TODO: Make own function
-    // NOTE: Copyed from initProject
-    // Adding scripts to package
-    const projectPkg = JSON.parse(fs.readFileSync(`${cwd}/package.json`), 'utf8')
-
-    console.log('Setting up scripts')
+    // Update package scripts
     const gulpScript = 'gulp --gulpfile ./node_modules/jellyapp/src/gulpfile.js --cwd .'
-    const scripts = {
+    updatePkgScripts({
         'dev-fe':       `export NODE_ENV=development && yarn delete-tmp && ${gulpScript}`,
         'build':        `export NODE_ENV=production && yarn delete-tmp && ${gulpScript} build`,
         'delete-tmp':   'rm -rf public tmp'
-
-    }
-    if (typeof projectPkg.scripts !== 'object') projectPkg.scripts = {}
-    _(scripts).each((val, key) => {
-        projectPkg.scripts[key] = val
     })
 
-    console.log('Writing new package.json')
-    fs.writeFileSync(`${cwd}/package.json`, JSON.stringify(projectPkg, null, 2))
+    // Update jelly.yaml
+    const jellyYaml = readJellyYaml()
+    jellyYaml.useFrontend = true
+    jellyYaml.frontend = {
+        useStatic: standAlone
+    }
+    writeJellyYaml(jellyYaml)
 }
 
 module.exports = addClient
