@@ -5,7 +5,7 @@ const setupUsersSessions = require('./setupUsersSessions')
 const {
     installYarnDeps,
     updatePkgScripts,
-} = require('./lib')
+} = require('./util')
 const {
     readJellyYaml,
     writeJellyYaml,
@@ -36,7 +36,7 @@ const addBackend = (withAuth = false) => {
     const jellyYaml = readJellyYaml()
     jellyYaml.useBackend = true
     jellyYaml.backend = {
-        routers:    [],
+        routers:    {},
         useAuth:    withAuth
     }
     writeJellyYaml(jellyYaml)

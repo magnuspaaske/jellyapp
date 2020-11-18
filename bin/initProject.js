@@ -18,7 +18,7 @@ const { copyFiles } = require('./copyFileToProject')
 const {
     installYarnDeps,
     updatePkgScripts,
-} = require('./lib')
+} = require('./util')
 
 
 const initProject = async () => {

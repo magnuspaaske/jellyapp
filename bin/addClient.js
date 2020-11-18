@@ -10,7 +10,7 @@ const {
 const {
     installYarnDeps,
     updatePkgScripts,
-} = require('./lib')
+} = require('./util')
 const {
     readJellyYaml,
     writeJellyYaml,
