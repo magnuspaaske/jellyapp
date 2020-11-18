@@ -14,6 +14,8 @@ const expObj = {
     cors:               require('./src/cors'),
     inputParser:        require('./src/inputParser'),
     originChecker:      require('./src/originChecker'),
+
+    readConfig:         readJellyYaml,
 }
 
 
@@ -22,6 +24,12 @@ if (jelly.useFrontend === true) {
         // Frontend
         pugFns:             require('./src/pug-fns')
     })
+
+    if (jelly.frontend.useStatic === true) {
+        Object.assign(expObj, {
+            serveStatic:        require('./src/serveStatic')
+        })
+    }
 }
 
 

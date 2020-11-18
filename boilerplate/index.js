@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 // Load variables
 require('colors')
 const jelly = require('jellyapp')
+const jellyYaml = jelly.readConfig()
 
 
 // Separate instances when running with nodemon
@@ -38,6 +39,11 @@ app.use(
         }
     })
 )
+
+// Send html if page is static
+if (jellyYaml.useFrontend && jellyYaml.frontend.useStatic) {
+    app.use(jelly.serveStatic())
+}
 
 
 //- JELLY: session
