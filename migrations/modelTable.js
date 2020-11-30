@@ -11,6 +11,7 @@ exports.up = (knex) => {
     // Create table
     return knex.schema.createTable('{MODELNAME_PLURAL}', table => {
         table.increments('id').primary()
+        // table.uuid('id').primary()
 
         table.timestamps()
     })

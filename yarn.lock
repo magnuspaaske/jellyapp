@@ -656,7 +656,16 @@ body-parser@1.19.0, body-parser@^1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bookshelf@^1.0.1:
+bookshelf-uuid@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/bookshelf-uuid/-/bookshelf-uuid-1.0.1.tgz#d0a0732db09493637c6eb8f792846403a25805b9"
+  integrity sha512-T2RF4h5PHjDFFUNB4aMuHxKYFSJDuI7BvTL879NQgytz+eU/quf3xPz5HF3EbGL6b1u8WGlhrT0Hn2kHkCCH5Q==
+  dependencies:
+    lodash.merge "^4.6.2"
+    lodash.result "^4.3.0"
+    uuid "^2.0.2"
+
+bookshelf@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/bookshelf/-/bookshelf-1.2.0.tgz#cb972aa2316405d3a4af9cb1e2814895ab23283e"
   integrity sha512-rm04YpHkLej6bkNezKUQjzuXV30rbyEHQoaKvfQ3fOyLYxPeB18uBL+h2t6SmeXjfsB+aReMmbhkMF/lUTbtMA==
@@ -3929,6 +3938,11 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
+lodash.merge@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
@@ -3938,6 +3952,11 @@ lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
   integrity sha1-k2pOMJ7zMKdkXtQUWYbIWuWyCAU=
+
+lodash.result@^4.3.0:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/lodash.result/-/lodash.result-4.5.2.tgz#cb45b27fb914eaa8d8ee6f0ce7b2870b87cb70aa"
+  integrity sha1-y0Wyf7kU6qjY7m8M57KHC4fLcKo=
 
 lodash.template@^3.0.0:
   version "3.6.2"
@@ -6637,6 +6656,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+
+uuid@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
+  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 uuid@^3.3.2:
   version "3.4.0"

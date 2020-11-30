@@ -8,5 +8,6 @@ const knex = require('knex')(dbConfig)
 const bookshelf = require('bookshelf')(knex)
 
 // TODO: Add more options for setting up bookshelf
+bookshelf.plugin(require('bookshelf-uuid'))
 
 module.exports = bookshelf

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.3
+- Updated the package so only relevant dependencies get loaded (frontend or backend)
+- Finished the setup for frontend, including for static frontends
+
+## 0.6
+- Made the experience of setting up a new project smoother
+
 ## 0.5.0
 - Added functionality so new models can be created with the CLI
 

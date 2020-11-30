@@ -22,6 +22,7 @@ const addBackend = (withAuth = false) => {
     installYarnDeps([
         'bcrypt',
         'bookshelf',
+        'bookshelf-uuid',
         'jsonwebtoken',
         'knex',
         'pg',
