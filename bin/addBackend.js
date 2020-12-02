@@ -23,11 +23,17 @@ const addBackend = (withAuth = false) => {
         'bcrypt',
         'bookshelf',
         'bookshelf-uuid',
+        'cookie-parser',
+        'cors',
+        'express-fileupload',
         'jsonwebtoken',
         'knex',
         'pg',
         'request',
         'showdown',
+        'swagger-parser',
+        'swagger-routes-express',
+        'swagger-ui-express',
     ])
 
     updatePkgScripts({
@@ -37,7 +43,6 @@ const addBackend = (withAuth = false) => {
     const jellyYaml = readJellyYaml()
     jellyYaml.useBackend = true
     jellyYaml.backend = {
-        routers:    {},
         useAuth:    withAuth
     }
     writeJellyYaml(jellyYaml)

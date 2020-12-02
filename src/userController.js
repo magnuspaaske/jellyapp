@@ -4,7 +4,6 @@ const _         = require('lodash')
 const Promise   = require('bluebird')
 
 
-const { apiHandler }    = require('./handlers')
 const checkFieldsExist  = require('./checkFieldsExist')
 const APIError          = require('./apiError')
 
@@ -18,13 +17,13 @@ const makeUserController = ((User) => {
     const controller = {}
 
     // Get current user
-    controller.getCurrentUser = apiHandler((req, res) => {
-        return Promise.resolve(res.send(req.user))
-    })
+    controller.getCurrentUser = (req, res) => {
+        res.send(req.user)
+    }
 
 
     // Update user
-    controller.updateCurrentUser = apiHandler((req, res) => {
+    controller.updateCurrentUser = (req, res) => {
         const omits = [
             'email',
             'created_at',
@@ -38,11 +37,11 @@ const makeUserController = ((User) => {
             .then((user) => {
                 res.send(user)
             })
-    })
+    }
 
 
     // Change user password
-    controller.changePassword = apiHandler((req, res) => {
+    controller.changePassword = (req, res, next) => {
         const session = req.session
 
         if (!req.body.password || !req.body.new_password) {
@@ -55,7 +54,7 @@ const makeUserController = ((User) => {
             })
             .then(user => user.checkPassword(req.body.password).then(result => {
                 if (result) return user
-                throw new APIError(401, 'The existing password is wrong')
+                next(new APIError(401, 'The existing password is wrong'))
             }))
             // Setting password
             .then(user => user.setPassword(req.body.new_password))
@@ -65,11 +64,11 @@ const makeUserController = ((User) => {
             .then(() => {
                 res.sendStatus(204)
             })
-    })
+    }
 
 
     // Make new user
-    controller.createUser = apiHandler((req, res) => {
+    controller.createUser = (req, res, next) => {
         const fields = ['email', 'password']
         if (!checkFieldsExist(fields, req.body)) {
             return APIError.promise(400, 'email or password not set')
@@ -81,7 +80,8 @@ const makeUserController = ((User) => {
             require: false,
         }).then(user => {
             if (user) {
-                throw new APIError(400, 'User already exists with provided email')
+                next(new APIError(400, 'User already exists with provided email'))
+                return
             }
 
             return new User({
@@ -92,14 +92,14 @@ const makeUserController = ((User) => {
                 res.status(201)
                 res.send(user)
             })
-    })
+    }
 
 
     // Make admin wether from making first user or as admin
     const makeAdmin = (req, res) => {
         const fields = ['email', 'password']
         if (!checkFieldsExist(fields, req.body)) {
-            return APIError.promise(400, 'email or password not set')
+            throw APIError.promise(400, 'email or password not set')
         }
 
         return new User({
@@ -124,13 +124,13 @@ const makeUserController = ((User) => {
     }
 
     // Make new admin
-    controller.createNewAdmin = apiHandler((req, res) => {
+    controller.createNewAdmin = (req, res) => {
         // Any admin can make new admins atm
         return makeAdmin(req, res)
-    })
+    }
 
     // Make first user
-    controller.makeFirstUser = apiHandler((req, res) => {
+    controller.makeFirstUser = (req, res) => {
         const firstUserToken = req.headers['first-user-token']
 
         if (
@@ -141,7 +141,7 @@ const makeUserController = ((User) => {
         }
 
         return makeAdmin(req, res)
-    })
+    }
 
     return controller
 })

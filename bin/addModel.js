@@ -2,7 +2,6 @@
 
 const pluralize = require('pluralize')
 const { copyFile, copyFiles, addMigration } = require('./copyFileToProject')
-const insertLinesInFile = require('./insertLinesInFile')
 
 
 const addModel = ({
@@ -19,12 +18,14 @@ const addModel = ({
     const modelnameCap = modelName.replace(/^\w/, modelName => modelName.toUpperCase())
     const modelnameUncap = modelName
     const modelnamePlural = pluralName ? pluralName : pluralize(modelName)
+    const modelnamePluralCap = modelnamePlural.replace(/^\w/, modelnamePlural => modelnamePlural.toUpperCase())
     tablename = tablename ? tablename : modelnamePlural
 
     const settings = {
         modelnameCap,
         modelnameUncap,
         modelnamePlural,
+        modelnamePluralCap,
         tablename,
     }
 
@@ -50,14 +51,9 @@ const addModel = ({
     if (router) {
         console.log('Adding router ...')
         copyFile({
-            originLocation:         'boilerplate/templates/modelRouter.js',
-            destinationLocation:    `app/routers/${modelName}Router.js`,
+            originLocation:         'boilerplate/templates/controllerBase.js',
+            destinationLocation:    `app/controllers/${modelName}Controller.js`,
             settings,
-        })
-        insertLinesInFile({
-            fileLocation: 'index.js',
-            lines: `app.use('/api/v0', require('./app/routers/${modelName}Router'))`,
-            symbol: 'routes',
         })
     } else {
         console.log('Continuing without adding router ...')

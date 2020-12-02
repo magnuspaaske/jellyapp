@@ -40,31 +40,31 @@ app.use(
     })
 )
 
+app.use(require('morgan')('tiny'))
+
+
+if (jellyYaml.useBackend) {
+    app.use(jelly.routing())
+    if (process.env.NODE_ENV === 'development') jelly.swaggerServer(app)
+}
+
+
+// Hook up page routes
+
+
 // Send html if page is static
 if (jellyYaml.useFrontend && jellyYaml.frontend.useStatic) {
     app.use(jelly.serveStatic())
 }
 
 
-//- JELLY: session
-
-//- JELLY: /session
-
-
-//- JELLY: routes
-
-//- JELLY: /routes
-
-
-//- JELLY: helloworld
+// Send hello world if index route hasn't been claimed yet
 app.get('/', function (req, res) {
     res.send('hello world')
 })
-//- JELLY: /helloworld
 
 
-//- JELLY: connect
+// Start server
 app.listen(app.get('port'), () => {
     console.log(`Node app is running on port ${app.get('port')}`.grey)
 })
-//- JELLY: /connect

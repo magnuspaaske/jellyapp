@@ -1,5 +1,4 @@
 // A way to get a basic, extendable session controller
-const { apiHandler }    = require('./handlers')
 const APIError          = require('./apiError')
 
 
@@ -11,7 +10,7 @@ const makeSessionController = ((User, Session) => {
     const controller = {}
 
     // Update a session (to cancel it)
-    controller.updateSession = apiHandler((req, res) => {
+    controller.updateSession = (req, res, next) => {
         return new Session({
             id:         req.params.session_id,
             user_id:    req.user.id,
@@ -22,7 +21,8 @@ const makeSessionController = ((User, Session) => {
                     session.get('user_id') !== req.user.id ||
                     !session.get('active')
                 ) {
-                    throw new APIError(404, 'The session was not found')
+                    next(new APIError(404, 'The session was not found'))
+                    return
                 }
                 return session.save(req.body)
             })
@@ -32,11 +32,11 @@ const makeSessionController = ((User, Session) => {
             .catch(Session.NotFoundError, (err) => {
                 throw new APIError(404, 'The session was not found')
             })
-    })
+    }
 
 
     // Make session
-    controller.createSession = apiHandler((req, res) => {
+    controller.createSession = (req, res, next) => {
         // Sanity checks
         if (!req.body.email) return APIError.promise(401, 'Email must be set to log in')
         if (!req.body.password) return APIError.promise(401, 'Password must be set to log in')
@@ -51,7 +51,8 @@ const makeSessionController = ((User, Session) => {
             .then(user => {
                 return user.checkPassword(req.body.password).then(result => {
                     if (result) return user
-                    throw err403
+                    next(err403)
+                    return
                 })
             })
             .then(user => {
@@ -69,9 +70,9 @@ const makeSessionController = ((User, Session) => {
                     })
             })
             .catch(User.NotFoundError, (err) => {
-                throw err403
+                next(err403)
             })
-    })
+    }
 
     return controller
 })

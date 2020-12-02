@@ -7,6 +7,7 @@ const fs = require('fs')
 
 const commander = require('commander')
 
+const addBackend = require('./addBackend')
 const addClient = require('./addClient')
 const addModel = require('./addModel')
 const setupUsersSessions = require('./setupUsersSessions')
@@ -56,10 +57,14 @@ commander
 commander
     .command('addBackend')
     .description('Adds a backend to a project')
-    .option('--use-auth', 'use the authentication module', true)
+    .option('--use-auth', 'use the authentication module', false)
     .action((opts) => {
-        console.log('backend setup')
-        console.log(opts)
+        if (opts.useAuth) {
+            console.log('Setting up backend with authentication system')
+        } else {
+            console.log('Setting up backend')
+        }
+        addBackend(opts.useAuth)
     })
 
 

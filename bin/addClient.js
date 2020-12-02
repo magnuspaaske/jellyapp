@@ -91,7 +91,6 @@ const addClient = (standAlone = false) => {
         'gulp-uglify-es',
         'include-all',
         'jquery',
-        'js-yaml',
         'pug',
         'replace',
         'showdown',

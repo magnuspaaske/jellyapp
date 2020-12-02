@@ -43,7 +43,7 @@ const initProject = async () => {
         //     name:   'Use Jelly Blocks for frontend',
         //     value:  'use_blocks'
         }, {
-            name:   'Set up an actual backend app',
+            name:   'Set up backend app',
             value:  'routes',
         }, {
             name:   'Set up an authentication system',
@@ -81,12 +81,10 @@ const initProject = async () => {
         'bluebird',
         'body-parser',
         'compression',
-        'cookie-parser',
-        'cors',
         'dotenv',
         'express',
-        'express-fileupload',
         'jellyapp',
+        'morgan',
     ])
     installYarnDeps([
         'eslint',

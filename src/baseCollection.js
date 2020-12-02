@@ -3,8 +3,10 @@
 const bookshelf = require('./bookshelf')
 
 module.exports = (collectionName, collectionModel, props) => {
-    return bookshelf.collection(collectionName, {
+    const collection = bookshelf.collection(collectionName, {
         model:          collectionModel,
         ...props
     })
+
+    return collection
 }

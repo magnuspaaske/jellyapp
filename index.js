@@ -1,7 +1,5 @@
 // Main exports from module
 
-const handlers = require('./src/handlers')
-
 const { readJellyYaml } = require('./src/jellyYaml')
 
 const jelly = readJellyYaml()
@@ -37,11 +35,9 @@ if (jelly.useBackend === true) {
     Object.assign(expObj, {
         APIError:           require('./src/apiError'),
 
-        handler:            handlers.handler,
-        apiHandler:         handlers.apiHandler,
-        pageHandler:        handlers.pageHandler,
-
         checkFieldsExist:   require('./src/checkFieldsExist'),
+        routing:            require('./src/routing'),
+        swaggerServer:      require('./src/swaggerServer'),
 
         // Bookshelf stuff + models/collections (to be extended)
         jellyKnex:          require('./src/knex'),

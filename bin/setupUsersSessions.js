@@ -33,13 +33,6 @@ const editIndexFile = () => {
         lines: readLines('session.js'),
         symbol: 'session',
     })
-
-    // Insert code to set up routes
-    insertLinesInFile({
-        fileLocation: 'index.js',
-        lines: readLines('sessionRoutes.js'),
-        symbol: 'routes',
-    })
 }
 
 
