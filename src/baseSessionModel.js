@@ -11,7 +11,7 @@ const jwt_algorithm = 'HS256'
 
 
 const baseSessionModel = (props, staticProps) => {
-    const sessionModel = baseModel('Session', 'sessions', {
+    const sessionModel = baseModel('Session', 'sessions', Object.assign({
         user () {
             return this.belongsTo('User')
         },
@@ -25,7 +25,7 @@ const baseSessionModel = (props, staticProps) => {
                 algorithm: jwt_algorithm
             })
         },
-    })
+    }, props))
 
     if ((typeof staticProps) === 'object') {
         _(staticProps).each((fun, key) => {
