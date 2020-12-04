@@ -23,13 +23,13 @@ const makeUserController = ((User) => {
 
 
     // Update user
-    controller.updateCurrentUser = (req, res) => {
+    controller.updateCurrentUser = (req, res, next) => {
         const omits = [
             'email',
             'created_at',
             'updated_at',
             'id',
-            ...req.user.sensitiveFields()
+            ...req.user.hidden
         ]
 
         return req.user
@@ -37,6 +37,7 @@ const makeUserController = ((User) => {
             .then((user) => {
                 res.send(user)
             })
+            .catch(err => next(err))
     }
 
 
@@ -54,7 +55,7 @@ const makeUserController = ((User) => {
             })
             .then(user => user.checkPassword(req.body.password).then(result => {
                 if (result) return user
-                next(new APIError(401, 'The existing password is wrong'))
+                throw new APIError(401, 'The existing password is wrong')
             }))
             // Setting password
             .then(user => user.setPassword(req.body.new_password))
@@ -64,6 +65,7 @@ const makeUserController = ((User) => {
             .then(() => {
                 res.sendStatus(204)
             })
+            .catch(err => next(err))
     }
 
 
@@ -80,23 +82,23 @@ const makeUserController = ((User) => {
             require: false,
         }).then(user => {
             if (user) {
-                next(new APIError(400, 'User already exists with provided email'))
-                return
+                throw new APIError(400, 'User already exists with provided email')
             }
 
             return new User({
                 email: req.body.email
             }).setPassword(req.body.password)
         }).then(user => user.save())
-            .then(user => {
-                res.status(201)
-                res.send(user)
-            })
+        .then(user => {
+            res.status(201)
+            res.send(user)
+        })
+        .catch(err => next(err))
     }
 
 
     // Make admin wether from making first user or as admin
-    const makeAdmin = (req, res) => {
+    const makeAdmin = (req, res, next) => {
         const fields = ['email', 'password']
         if (!checkFieldsExist(fields, req.body)) {
             throw APIError.promise(400, 'email or password not set')
@@ -121,16 +123,17 @@ const makeUserController = ((User) => {
                 res.status(201)
                 res.send(user)
             })
+            .catch(err => next(err))
     }
 
     // Make new admin
-    controller.createNewAdmin = (req, res) => {
+    controller.createNewAdmin = (req, res, next) => {
         // Any admin can make new admins atm
-        return makeAdmin(req, res)
+        return makeAdmin(req, res, next)
     }
 
     // Make first user
-    controller.makeFirstUser = (req, res) => {
+    controller.makeFirstUser = (req, res, next) => {
         const firstUserToken = req.headers['first-user-token']
 
         if (
@@ -140,7 +143,7 @@ const makeUserController = ((User) => {
             return APIError.promise(403, 'A first user token must be provided or it didn\'t match the server one')
         }
 
-        return makeAdmin(req, res)
+        return makeAdmin(req, res, next)
     }
 
     return controller

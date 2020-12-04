@@ -9,4 +9,6 @@
 
 const { baseSessionModel } = require('jellyapp')
 
-module.exports = baseSessionModel()
+module.exports = baseSessionModel({
+    // uuid: true
+})

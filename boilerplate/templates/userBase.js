@@ -12,7 +12,7 @@ const {
 
 
 const User = baseUserModel({
-
+    // uuid: true
 })
 
 User.fetchById = (id) => {

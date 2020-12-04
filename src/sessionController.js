@@ -51,8 +51,7 @@ const makeSessionController = ((User, Session) => {
             .then(user => {
                 return user.checkPassword(req.body.password).then(result => {
                     if (result) return user
-                    next(err403)
-                    return
+                    throw err403
                 })
             })
             .then(user => {
@@ -61,17 +60,17 @@ const makeSessionController = ((User, Session) => {
                 })
                     .save()
                     .then(session => {
-                        user.set({
-                            token: session.generateToken()
-                        })
-
                         res.status(202)
-                        res.send(user)
+                        res.send(Object.assign(user.serialize(), {
+                            token: session.generateToken(),
+                            email: user.get('email')
+                        })
                     })
             })
-            .catch(User.NotFoundError, (err) => {
+            .catch(User.NotFoundError, err => {
                 next(err403)
             })
+            .catch(err => next(err))
     }
 
     return controller

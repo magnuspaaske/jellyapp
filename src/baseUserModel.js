@@ -17,18 +17,13 @@ const baseUserModel = (props, staticProps) => {
         },
 
         // Fields that shouldn't be send to the user
-        sensitiveFields () {
-            const arr = [
-                'password',
-                'has_login',
-                'password_request_time',
-                'password_reset_token'
-            ]
-
-            if (!this.get('is_admin')) arr.push('is_admin')
-
-            return arr
-        },
+        hidden: [
+            'password',
+            'has_login',
+            'password_request_time',
+            'password_reset_token',
+            'is_admin',
+        ],
 
         // Set password
         setPassword (new_password) {

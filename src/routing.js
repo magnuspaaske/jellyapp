@@ -46,7 +46,16 @@ const swaggerRouting = () => {
         res.status(err.code || 500)
 
         if (err.isApiError) {
-            res.send(require('lodash').pick(err, ['title', 'data', 'code', 'message']))
+            const { title, data, code, message } = err
+            if (data) {
+                res.send({
+                    title, data, code
+                })
+            } else {
+                res.send({
+                    message, code
+                })
+            }
         } else {
             res.send({
                 error: 'An unknown error occured'
