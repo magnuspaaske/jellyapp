@@ -61,9 +61,6 @@ if (jelly.useBackend === true) {
 
             sessionController:  require('./src/sessionController'),
             userController:     require('./src/userController'),
-
-            sessionRouter:      require('./src/sessionRouter'),
-            userRouter:         require('./src/userRouter'),
         })
     }
 }

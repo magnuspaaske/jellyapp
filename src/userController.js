@@ -73,7 +73,7 @@ const makeUserController = ((User) => {
     controller.createUser = (req, res, next) => {
         const fields = ['email', 'password']
         if (!checkFieldsExist(fields, req.body)) {
-            return APIError.promise(400, 'email or password not set')
+            throw new APIError(400, 'email or password not set')
         }
 
         return new User({
@@ -101,7 +101,7 @@ const makeUserController = ((User) => {
     const makeAdmin = (req, res, next) => {
         const fields = ['email', 'password']
         if (!checkFieldsExist(fields, req.body)) {
-            throw APIError.promise(400, 'email or password not set')
+            throw new APIError(400, 'email or password not set')
         }
 
         return new User({
@@ -140,7 +140,7 @@ const makeUserController = ((User) => {
             !firstUserToken || !process.env.FIRST_USER_TOKEN ||
             firstUserToken !== process.env.FIRST_USER_TOKEN
         ) {
-            return APIError.promise(403, 'A first user token must be provided or it didn\'t match the server one')
+            throw new APIError(403, 'A first user token must be provided or it didn\'t match the server one')
         }
 
         return makeAdmin(req, res, next)

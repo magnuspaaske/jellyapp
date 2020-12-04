@@ -11,8 +11,4 @@ class APIError extends Error {
     }
 }
 
-APIError.promise = (code, message, data) => {
-    return Promise.reject(new APIError(code, message, data))
-}
-
 module.exports = APIError

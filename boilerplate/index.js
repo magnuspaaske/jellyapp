@@ -44,7 +44,12 @@ app.use(require('morgan')('tiny'))
 
 
 if (jellyYaml.useBackend) {
-    app.use(jelly.routing())
+    if (jellyYaml.backend.useAuth) {
+        app.use(jelly.sessionMiddleware(require('./app/models/sessionModel')))
+        app.use(jelly.routing(require('./app/models/userModel'), require('./app/models/sessionModel')))
+    } else {
+        app.use(jelly.routing())
+    }
     if (process.env.NODE_ENV === 'development') jelly.swaggerServer(app)
 }
 

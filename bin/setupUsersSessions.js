@@ -1,15 +1,13 @@
 // Add user/session tables to a project
 
-const fs = require('fs')
-const path = require('path')
-
 const { copyFiles, addMigration } = require('./copyFileToProject')
-const insertLinesInFile = require('./insertLinesInFile')
+
+const {
+    readJellyYaml,
+    writeJellyYaml,
+} = require('../src/jellyYaml')
 
 const addMigrationFile = () => {
-    addMigration({
-        migrationName: 'addUserSessionTables'
-    })
 }
 
 const addFiles = () => {
@@ -21,25 +19,26 @@ const addFiles = () => {
     })
 }
 
-const readLines = (file) => {
-    const fileLoc = path.join(__dirname, `../boilerplate/indexLines/${file}`)
-    return fs.readFileSync(fileLoc, 'utf8')
-}
 
-const editIndexFile = () => {
-    // Insert code to set up session
-    insertLinesInFile({
-        fileLocation: 'index.js',
-        lines: readLines('session.js'),
-        symbol: 'session',
+const setupUserSessions = () => {
+    // Add migrations
+    addMigration({
+        migrationName: 'addUserSessionTables'
     })
+
+    // Add boilerplate
+    copyFiles({
+        files: {
+            'app/models/userModel.js':       'templates/userBase.js',
+            'app/models/sessionModel.js':    'templates/sessionBase.js',
+        }
+    })
+
+    // Update jelly.yaml
+    const jellyYaml = readJellyYaml()
+    if (!(typeof jellyYaml.backend === 'object')) jellyYaml.backend = {}
+    jellyYaml.backend.useAuth = true
+    writeJellyYaml(jellyYaml)
 }
 
-
-
-module.exports = () => {
-    console.log('Setting up user sessions ...')
-    addMigrationFile()
-    addFiles()
-    editIndexFile()
-}
+module.exports = setupUserSessions

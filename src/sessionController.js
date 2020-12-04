@@ -38,8 +38,8 @@ const makeSessionController = ((User, Session) => {
     // Make session
     controller.createSession = (req, res, next) => {
         // Sanity checks
-        if (!req.body.email) return APIError.promise(401, 'Email must be set to log in')
-        if (!req.body.password) return APIError.promise(401, 'Password must be set to log in')
+        if (!req.body.email) throw new APIError(401, 'Email must be set to log in')
+        if (!req.body.password) throw new APIError(401, 'Password must be set to log in')
 
         // The error the log in is rejected
         const err403 = new APIError(403, 'User not found or password incorrect')
@@ -64,7 +64,7 @@ const makeSessionController = ((User, Session) => {
                         res.send(Object.assign(user.serialize(), {
                             token: session.generateToken(),
                             email: user.get('email')
-                        })
+                        }))
                     })
             })
             .catch(User.NotFoundError, err => {

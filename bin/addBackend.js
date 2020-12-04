@@ -13,9 +13,6 @@ const {
 
 
 const addBackend = (withAuth = false) => {
-    if (withAuth) {
-        setupUsersSessions()
-    }
 
     // Install
     console.log('Installing yarn dependencies for backend ...')
@@ -42,10 +39,9 @@ const addBackend = (withAuth = false) => {
 
     const jellyYaml = readJellyYaml()
     jellyYaml.useBackend = true
-    jellyYaml.backend = {
-        useAuth:    withAuth
-    }
     writeJellyYaml(jellyYaml)
+
+    if (withAuth) setupUsersSessions()
 }
 
 module.exports = addBackend

@@ -1,0 +1,155 @@
+openapi:        '3.0.3'
+info:
+  description:  This is the API for the Jelly auth services
+  version:      0.6.4
+  title:        Jelly Auth Routes
+servers:
+  - url: /api/v0
+
+paths:
+  /users:
+    post:
+      operationId:  createUser
+      summary:      Sign up
+      description:  Create a new user
+      tags:
+        - User
+        - Signup
+      requestBody:
+        $ref: '#/components/requestBodies/userSignin'
+      responses:
+        201:
+          description: New user created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        403:
+          description: Email already used for user
+
+  /users/me:
+    get:
+      operationId:  getCurrentUser
+      summary:      Get current user
+      description:  Get the info on the current user
+      security:
+        - auth: []
+      tags:
+        - User
+      responses:
+        200:
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+    put:
+      operationId:  updateCurrentUser
+      summary:      Update current user
+      description:  Update current user
+      security:
+        - auth: []
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/userInfo'
+      responses:
+        200:
+          description: Current user updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+  /users/me/password:
+    put:
+      operationId:  changePassword
+      summary:      Change password
+      security:
+        - auth: []
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/changePassword'
+      responses:
+        204:
+          description: Password was updated
+        401:
+          description: There was an error updating the password
+
+  /sessions:
+    post:
+      operationId:  createSession
+      summary:      Create session
+      description:  Create session to log in. A cookie will be set and the access_token can be used as a bearer auth
+      tags:
+        - Session
+      requestBody:
+        $ref: '#/components/requestBodies/userSignin'
+      responses:
+        201:
+          description: Login successful, session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        403:
+          description: Login unsuccessful
+
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          # type: string
+          # format: uuid
+          description: ID for user
+        email:
+          type: string
+          format: email
+
+
+  requestBodies:
+    userSignin:
+      description: Signin/signup request body
+      content:
+        '*/*':
+          schema:
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+
+    userInfo:
+      description: Information for updating user
+      content:
+        '*/*':
+          schema:
+            properties:
+              name:
+                type: string
+
+
+    changePassword:
+      description: New password
+      content:
+        '*/*':
+          schema:
+            properties:
+              password:
+                type: string
+                description: The current password
+              new_password:
+                type: string
+                description: The new password
+
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
