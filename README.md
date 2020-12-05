@@ -1,21 +1,15 @@
 # Jellyapp Framework
 
-Jellyapp is an opinion framework adding a layer on top of Bookshelf.js and Express.js to speed up development. It contains a number of convenience methods as well as a user system and session management.
+Jellyapp is an opinionated miniframework for website and api development. Built on top of bookshelf.js and express.js it allows you to easily build raw html website, backend apis and classic webapps (coming soon). API endpoints are routed through openapi making it easy to document the api as it gets developed.
 
-The framework is currently under development.
+To get started and set up a new project simply run `jelly init <new project name>` and a follow the instructions. To add a new model run `jelly addModel <modelname>`.
 
-## Features
-- User and session management
-- Authentication for signed in users and session management
-- Various peace of mind utility functions for setting up the app environment
-- Error handling and request handlers for APIs
+This is beta software and there's still a number of features to build out.
 
 ## Todo
 - Boilerplate code to quickly set up a project
 - Page rendering including setting up something like turbolinks to speed up page loads
-- Build scripts for assets and pages alike
 - Image handling, both for assets and uploaded pictures
-- Services to easily add REST endpoints for resources
 - Testing and a test suite for projects using Jellyapp
 - I18N for language localization
--
+- Complete scaffolding for new applications by including openapi and adding more meta information to the package.json file

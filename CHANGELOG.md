@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.2
+- Functionality to use openapi to declare routes
+- Allowing models to use uuid
+- Streamlined error handling
+- Improved documentation
+
 ## 0.6.3
 - Updated the package so only relevant dependencies get loaded (frontend or backend)
 - Finished the setup for frontend, including for static frontends
