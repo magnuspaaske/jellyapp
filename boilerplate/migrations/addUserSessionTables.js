@@ -13,7 +13,7 @@ exports.up = (knex) => {
         table.timestamps()
     }).then(() => {
         // Sessions
-        return knex.schema.createTable('sessions', table =>{
+        return knex.schema.createTable('sessions', table => {
             table.increments('id').primary()
             // table.uuid('id').primary()
             table.boolean('active').defaultTo(true)

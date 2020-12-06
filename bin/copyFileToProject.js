@@ -50,8 +50,8 @@ const addMigration = ({
     const now = moment().format('YYYYMMDDHHmmss')
 
     copyFile({
-        originLocation: `migrations/${migrationTmpName}.js`,
-        destinationLocation: `migrations/${now}_${migrationName}.js`,
+        originLocation:         `boilerplate/migrations/${migrationTmpName}.js`,
+        destinationLocation:    `migrations/${now}_${migrationName}.js`,
         settings,
     })
 }
@@ -66,16 +66,16 @@ const copyFiles = ({
     if (Array.isArray(files)) {
         files.map(file => {
             copyFile({
-                originLocation: `boilerplate/${file}`,
-                destinationLocation: `${root ? root + '/' : ''}${file}`,
+                originLocation:         `boilerplate/${file}`,
+                destinationLocation:    `${root ? root + '/' : ''}${file}`,
                 settings,
             })
         })
     } else if (typeof files === 'object') {
         _(files).each((val, key) => {
             copyFile({
-                originLocation: `boilerplate/${val}`,
-                destinationLocation: `${root ? root + '/' : ''}${key}`,
+                originLocation:         `boilerplate/${val}`,
+                destinationLocation:    `${root ? root + '/' : ''}${key}`,
                 settings,
             })
         })
