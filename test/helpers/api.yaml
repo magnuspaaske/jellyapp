@@ -1,0 +1,7 @@
+openapi:        '3.0.3'
+info:
+  description:  This is the test api for jelly
+  version:      0.7.1
+  title:        Jelly Test Routes
+servers:
+  - url: /api/v0

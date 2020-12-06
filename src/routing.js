@@ -15,19 +15,26 @@ const sessionController = require('./sessionController')
 const userController    = require('./userController')
 
 
-const swaggerRouting = (User, Session) => {
-    const jellySetup = readJellyYaml()
+const swaggerRouting = ({
+    authApiLocation     = 'node_modules/jellyapp/src/authApi',
+    apiLocation         = 'api',
+    combinedApiLocation = 'combined-api',
+    jellySetup          = readJellyYaml(),
+    UserModel           = require(`${process.cwd()}/app/models/userModel`),
+    SessionModel        = require(`${process.cwd()}/app/models/sessionModel`),
+    security            = {},
+    controllerLocation  = 'app/controllers',
+} = {}) => {
     let swaggerDocument
-
 
     if (jellySetup.backend.useAuth) {
         swaggerDocument = _.merge(
-            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/node_modules/jellyapp/src/authApi.yaml`, 'utf8')),
-            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/api.yaml`, 'utf8'))
+            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${authApiLocation}.yaml`, 'utf8')),
+            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
         )
     } else {
         // Read specs
-        swaggerDocument = yaml.safeLoad(fs.readFileSync(`${process.cwd()}/api.yaml`, 'utf8'))
+        swaggerDocument = yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
     }
 
     // Test specs
@@ -41,10 +48,7 @@ const swaggerRouting = (User, Session) => {
 
     // Write out full api
     if (jellySetup.backend.useAuth) {
-        fs.writeFileSync(
-            `${process.cwd()}/combined-api.yaml`,
-            yaml.safeDump(swaggerDocument)
-        )
+        fs.writeFileSync(`${process.cwd()}/${combinedApiLocation}.yaml`, yaml.safeDump(swaggerDocument))
     }
 
     // Add route for docs
@@ -52,24 +56,25 @@ const swaggerRouting = (User, Session) => {
 
     // Get controllers
     const controllers = {}
-    const options = {}
+    const connectOptions = {}
     if (jellySetup.backend.useAuth) {
         Object.assign(controllers,
-            sessionController(User, Session),
-            userController(User),
+            sessionController(UserModel, SessionModel),
+            userController(UserModel),
         )
-        options.security = {
+        connectOptions.security = Object.assign({
             auth:       auth(),
             adminAuth:  auth({admin: true})
-        }
+        }, security || {})
     }
-    fs.readdirSync(`${process.cwd()}/app/controllers`).forEach(file => {
-        const controller = require(`${process.cwd()}/app/controllers/${file}`)
+
+    fs.readdirSync(`${process.cwd()}/${controllerLocation}`).forEach(file => {
+        const controller = require(`${process.cwd()}/${controllerLocation}/${file}`)
         Object.assign(controllers, controller)
     })
 
     // Add routes
-    const connect = connector(controllers, swaggerDocument, options)
+    const connect = connector(controllers, swaggerDocument, connectOptions)
     connect(router)
 
     // Handle errors
@@ -80,7 +85,7 @@ const swaggerRouting = (User, Session) => {
 
         res.status(err.code || 500)
 
-        if (err.isApiError) {
+        if (err.name === 'APIError') {
             const { title, data, code, message } = err
             if (data) {
                 res.send({

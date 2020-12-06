@@ -25,7 +25,6 @@ exports.up = (knex) => {
 }
 
 exports.down = (knex) => {
-    return knex.schema.dropTable('sessions').then(() => {
-        return knex.schema.dropTable('users')
-    })
+    return knex.schema.dropTable('sessions')
+        .then(() => knex.schema.dropTable('users'))
 }
