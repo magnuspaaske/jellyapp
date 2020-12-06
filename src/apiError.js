@@ -7,7 +7,6 @@ class APIError extends Error {
         this.title = message
         this.name = 'APIError'
         this.data = data
-        this.isApiError = true
     }
 }
 

@@ -1,11 +1,11 @@
 // Setting up the basic app
 
-const jelly = require('jellyapp')
-
 const express       = require('express')
 const compression   = require('compression')
 
-const makeApp = () => {
+const makeApp = ({
+    useBackend = require('./jellyYaml').readJellyYaml().useBackend,
+} = {}) => {
     // Make express to extend
     const app = express()
 
@@ -15,7 +15,7 @@ const makeApp = () => {
     // Standard port 5000, can be changed in .env
     app.set('port', process.env.PORT || 5000)
 
-    if (require('./jellyYaml').readJellyYaml().useBackend) {
+    if (useBackend) {
         // Middleware
         require('./inputParser')(app)
         require('./cors')(app)

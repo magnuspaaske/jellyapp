@@ -10,10 +10,6 @@
 // Load environment for use in development or testing
 if (process.env.NODE_ENV === 'development') {
     require('dotenv').config()
-} else if (process.env.NODE_ENV === 'test') {
-    require('dotenv').config({
-        path: './.env.test'
-    })
 }
 
 
@@ -40,13 +36,18 @@ app.use(
     })
 )
 
-app.use(require('morgan')('tiny'))
+if (process.env.NODE_ENV === 'development') {
+    app.use(require('morgan')('tiny'))
+}
 
 
 if (jellyYaml.useBackend) {
     if (jellyYaml.backend.useAuth) {
         app.use(jelly.sessionMiddleware(require('./app/models/sessionModel')))
-        app.use(jelly.routing(require('./app/models/userModel'), require('./app/models/sessionModel')))
+        app.use(jelly.routing(
+            require('./app/models/userModel'),
+            require('./app/models/sessionModel')
+        ))
     } else {
         app.use(jelly.routing())
     }
@@ -73,3 +74,6 @@ app.get('/', function (req, res) {
 app.listen(app.get('port'), () => {
     console.log(`Node app is running on port ${app.get('port')}`.grey)
 })
+
+
+module.exports = app

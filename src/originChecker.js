@@ -4,6 +4,9 @@ const _ = require('lodash')
 
 module.exports = (app) => {
     app.use((req, res, next) => {
+        // Only do something if origins is set
+        if (!process.env.PAGE_ORIGIN) return next()
+
         // Split page origin in case there's multiple
         const origins = process.env.PAGE_ORIGIN.split(/[,,;]/)
 
