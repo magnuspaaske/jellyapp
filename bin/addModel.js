@@ -8,7 +8,7 @@ const addModel = ({
     modelName = null,
     pluralName = null,
     tablename = null,
-    router = true,
+    controller = true,
 } = {}) => {
     if (!modelName) {
         const txt = 'modelName must be set for addModel to work'
@@ -29,12 +29,13 @@ const addModel = ({
         tablename,
     }
 
-    // Insert collection and model
-    console.log('Making model and collection files ...')
+    // Insert collection, model and test
+    console.log('Making model, collection and test files ...')
     copyFiles({
         files: {
             [`app/collections/${modelName}Collection.js`]:  'templates/collectionBase.js',
             [`app/models/${modelName}Model.js`]:            'templates/modelBase.js',
+            [`test/${modelnameCap}Test.js`]:                'templates/modelTest.js',
         },
         settings
     })
@@ -47,16 +48,16 @@ const addModel = ({
         settings
     })
 
-    // Insert router if needed
-    if (router) {
-        console.log('Adding router ...')
+    // Insert controll if needed
+    if (controller) {
+        console.log('Adding controller ...')
         copyFile({
             originLocation:         'boilerplate/templates/controllerBase.js',
             destinationLocation:    `app/controllers/${modelName}Controller.js`,
             settings,
         })
     } else {
-        console.log('Continuing without adding router ...')
+        console.log('Continuing without adding controller ...')
     }
 
     console.log(`Created ${modelName} model`)

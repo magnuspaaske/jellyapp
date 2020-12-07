@@ -81,14 +81,14 @@ commander
     .command('addModel <modelName>')
     .alias('makeModel')
     .description('Adding a model to the project')
-    .option('--no-crud', 'don\'t add router to new model', false)
+    .option('--no-crud', 'don\'t add controller to new model', false)
     .option('--plural <plural>', 'name for plural version of model', null)
     .action((modelName, opts) => {
         console.log(`Adding model: ${modelName}`)
         addModel({
             modelName,
             pluralName: opts.plural,
-            router: opts.crud,
+            controller: opts.crud,
         })
     })
 
