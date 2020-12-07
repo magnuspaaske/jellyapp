@@ -7,11 +7,12 @@ require('dotenv').config({
 })
 
 const beforeHook    = require('./helpers/beforeHook')
+const User          = require('./helpers/testUserModel')
 
 const app = require('./helpers/testApp')
 chai.use(chaiHttp)
 
-const request = chai.request(app)
+const request = () => chai.request(app)
 
 
 describe('User', () => {
@@ -19,7 +20,7 @@ describe('User', () => {
     before(beforeHook(tokens))
 
     it('sign up new user', done => {
-        request
+        request()
             .post('/api/v0/users')
             .send({
                 email: 'user2@example.com',
@@ -29,6 +30,52 @@ describe('User', () => {
                 expect(res).to.have.status(201)
                 expect(res.body.email).to.equal('user2@example.com')
                 done()
+            })
+    })
+
+
+    it('sign in', done => {
+        request()
+            .post('/api/v0/sessions')
+            .send({
+                email: 'user@example.com',
+                password: 'password'
+            })
+            .end((err, res)  => {
+                expect(res).to.have.status(202)
+                done()
+            })
+    })
+
+    it('get current user', done => {
+        request()
+            .get('/api/v0/users/me')
+            .set('Authorization', tokens.user)
+            .end((err, res) => {
+                expect(res).to.have.status(200)
+                expect(res.body.email).to.equal('user@example.com')
+                done()
+            })
+    })
+
+    it('change password', async () => {
+        return request()
+            .put('/api/v0/users/me/password')
+            .set('Authorization', tokens.user)
+            .send({
+                password:       'password',
+                new_password:   'new_password',
+            })
+            .then(async (res) => {
+                expect(res).to.have.status(204)
+
+                const user = new User({ email: 'user@example.com' })
+                await user.fetch()
+
+                const passwordWorking = await user.checkPassword('password')
+                expect(passwordWorking).to.equal(false)
+                const newPasswordWorking = await user.checkPassword('new_password')
+                expect(newPasswordWorking).to.equal(true)
             })
     })
 })
