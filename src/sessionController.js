@@ -42,7 +42,7 @@ const makeSessionController = ((User, Session) => {
         if (!req.body.password) throw new APIError(401, 'Password must be set to log in')
 
         // The error the log in is rejected
-        const err403 = new APIError(403, 'User not found or password incorrect')
+        const err401 = new APIError(401, 'User not found or password incorrect')
 
         return new User({
             email: req.body.email.toLowerCase()
@@ -51,7 +51,7 @@ const makeSessionController = ((User, Session) => {
             .then(user => {
                 return user.checkPassword(req.body.password).then(result => {
                     if (result) return user
-                    throw err403
+                    throw err401
                 })
             })
             .then(user => {
@@ -68,7 +68,7 @@ const makeSessionController = ((User, Session) => {
                     })
             })
             .catch(User.NotFoundError, err => {
-                next(err403)
+                next(err401)
             })
             .catch(err => next(err))
     }

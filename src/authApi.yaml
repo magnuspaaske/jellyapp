@@ -24,7 +24,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-        403:
+        401:
           description: Email already used for user
 
   /users/me:
@@ -94,7 +94,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-        403:
+        401:
           description: Login unsuccessful
 
 
