@@ -46,7 +46,7 @@ const makeUserController = ((User) => {
         const session = req.session
 
         if (!req.body.password || !req.body.new_password) {
-            return Promise.reject(new APIError(401, 'The old and the new password must be set.'))
+            return next(new APIError(401, 'The old and the new password must be set.'))
         }
 
         return req.user
@@ -55,7 +55,7 @@ const makeUserController = ((User) => {
             })
             .then(user => user.checkPassword(req.body.password).then(result => {
                 if (result) return user
-                throw new APIError(401, 'The existing password is wrong')
+                throw new APIError(403, 'The existing password is wrong')
             }))
             // Setting password
             .then(user => user.setPassword(req.body.new_password))
@@ -82,7 +82,7 @@ const makeUserController = ((User) => {
             require: false,
         }).then(user => {
             if (user) {
-                throw new APIError(400, 'User already exists with provided email')
+                throw new APIError(409, 'User already exists with provided email')
             }
 
             return new User({

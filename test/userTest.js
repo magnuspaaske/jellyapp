@@ -19,18 +19,33 @@ describe('User', () => {
     const tokens = {}
     before(beforeHook(tokens))
 
-    it('sign up new user', done => {
-        request()
-            .post('/api/v0/users')
-            .send({
-                email: 'user2@example.com',
-                password: 'password'
-            })
-            .end((err, res) => {
-                expect(res).to.have.status(201)
-                expect(res.body.email).to.equal('user2@example.com')
-                done()
-            })
+    describe('signup', () => {
+        it('using existing email', done => {
+            request()
+                .post('/api/v0/users')
+                .send({
+                    email: 'user@example.com',
+                    password: 'password'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(409)
+                    done()
+                })
+        })
+
+        it('using new email', done => {
+            request()
+                .post('/api/v0/users')
+                .send({
+                    email: 'user2@example.com',
+                    password: 'password'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(201)
+                    expect(res.body.email).to.equal('user2@example.com')
+                    done()
+                })
+        })
     })
 
 
@@ -58,24 +73,45 @@ describe('User', () => {
             })
     })
 
-    it('change password', async () => {
-        return request()
-            .put('/api/v0/users/me/password')
-            .set('Authorization', tokens.user)
-            .send({
-                password:       'password',
-                new_password:   'new_password',
-            })
-            .then(async (res) => {
-                expect(res).to.have.status(204)
+    describe('change password', () => {
+        it('getting error using wrong password', async () => {
+            return request()
+                .put('/api/v0/users/me/password')
+                .set('Authorization', tokens.user)
+                .send({
+                    password:       'wrong_password',
+                    new_password:   'new_password',
+                })
+                .then(async (res) => {
+                    expect(res).to.have.status(403)
 
-                const user = new User({ email: 'user@example.com' })
-                await user.fetch()
+                    const user = new User({ email: 'user@example.com'})
+                    await user.fetch()
 
-                const passwordWorking = await user.checkPassword('password')
-                expect(passwordWorking).to.equal(false)
-                const newPasswordWorking = await user.checkPassword('new_password')
-                expect(newPasswordWorking).to.equal(true)
-            })
+                    const passwordWorking = await user.checkPassword('password')
+                    expect(passwordWorking).to.equal(true)
+                })
+        })
+
+        it('success using right password', async () => {
+            return request()
+                .put('/api/v0/users/me/password')
+                .set('Authorization', tokens.user)
+                .send({
+                    password:       'password',
+                    new_password:   'new_password',
+                })
+                .then(async (res) => {
+                    expect(res).to.have.status(204)
+
+                    const user = new User({ email: 'user@example.com' })
+                    await user.fetch()
+
+                    const passwordWorking = await user.checkPassword('password')
+                    expect(passwordWorking).to.equal(false)
+                    const newPasswordWorking = await user.checkPassword('new_password')
+                    expect(newPasswordWorking).to.equal(true)
+                })
+        })
     })
 })
