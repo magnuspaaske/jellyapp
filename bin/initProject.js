@@ -70,6 +70,7 @@ const initProject = async () => {
             '.gitignore':       '.gitignore.sample',
             '.env.sample':      '.env.sample',
             '.env':             '.env.sample',
+            '.env.test':        '.env.sample',
             '.editorconfig':    '.editorconfig',
             '.eslintrc.yml':    '.eslintrc.yml',
         }
