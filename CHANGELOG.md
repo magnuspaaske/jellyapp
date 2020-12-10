@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.3
+- Testing added to boilerplate
+- Added some testing for user routes
+
 ## 0.7.2
 - Functionality to use openapi to declare routes
 - Allowing models to use uuid
