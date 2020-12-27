@@ -77,7 +77,7 @@ const makeUserController = ((User) => {
         }
 
         return new User({
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
         }).fetch({
             require: false,
         }).then(user => {

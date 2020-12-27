@@ -39,8 +39,7 @@ const makeSessionMiddleware = (Session) => {
         }
 
         const resetSessionCookie = () => {
-            delete this.attributes['session_id']
-            delete this.attributes['user_id']
+            this.attributes = {}
             setSessionCookie()
         }
 
@@ -68,11 +67,10 @@ const makeSessionMiddleware = (Session) => {
         req.session = this
         res.locals.session = this
 
-        if (this.get('session_id') && this.get('user_id')) {
+        if (this.get('session_id')) {
             // Finding session and user id
             return new Session({
                 id:         this.get('session_id'),
-                user_id:    this.get('user_id'),
             })
                 .fetch({
                     withRelated: ['user']

@@ -62,10 +62,17 @@ const swaggerRouting = ({
             sessionController(UserModel, SessionModel),
             userController(UserModel),
         )
+        if (fs.existsSync(`${process.cwd()}/app/security`)) {
+            fs.readdirSync(`${process.cwd()}/app/security`).forEach(file => {
+                const controller = require(`${process.cwd()}/app/security/${file}`)
+                Object.assign(security, controller)
+            })
+        }
+
         connectOptions.security = Object.assign({
             auth:       auth(),
             adminAuth:  auth({admin: true})
-        }, security || {})
+        }, security)
     }
 
     fs.readdirSync(`${process.cwd()}/${controllerLocation}`).forEach(file => {

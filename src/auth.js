@@ -1,6 +1,5 @@
 // auth middleware to authenticate requests
 
-const Promise           = require('bluebird')
 const APIError          = require('./apiError')
 
 

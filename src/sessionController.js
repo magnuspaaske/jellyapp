@@ -38,8 +38,8 @@ const makeSessionController = ((User, Session) => {
     // Make session
     controller.createSession = (req, res, next) => {
         // Sanity checks
-        if (!req.body.email) throw new APIError(401, 'Email must be set to log in')
-        if (!req.body.password) throw new APIError(401, 'Password must be set to log in')
+        if (!req.body.email) throw new APIError(400, 'Email must be set to log in')
+        if (!req.body.password) throw new APIError(400, 'Password must be set to log in')
 
         // The error the log in is rejected
         const err401 = new APIError(401, 'User not found or password incorrect')
