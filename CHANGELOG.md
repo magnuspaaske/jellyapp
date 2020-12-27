@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.4
+- Updated sessions so only the session id is used to locate sessions
+- Added possibility to add auth definitions in the app/security directory for api.yaml consumption
+- Made gulp more flexible in the way it uses styles/scripts/fonts from npm
+
 ## 0.7.3
 - Testing added to boilerplate
 - Added some testing for user routes
