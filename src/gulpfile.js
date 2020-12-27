@@ -295,7 +295,7 @@ gulp.task('minify-js', () => {
 
 
 // Function to quickly deal with copying npm dependencies
-const copyNpm = (location, type, prod) => {
+const copyNpm = (location, type, prod, filename) => {
     let dest = ''
     // Check for prod
     if (prod) {
@@ -307,15 +307,38 @@ const copyNpm = (location, type, prod) => {
         dest += 'scripts/dependencies'
     } else if (type === 'css') {
         dest += 'styles/dependencies'
+    } else if (type === 'fonts') {
+        if (prod) {
+            dest = 'tmp/copies/webfonts'
+        } else {
+            dest = 'public/styles/webfonts'
+        }
     }
 
-    return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
-        .pipe(gulp.dest(dest))
+    if (filename) {
+        return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
+            .pipe(rename((path) => {
+                path.basename = filename
+            }))
+            .pipe(gulp.dest(dest))
+    } else {
+        return gulp.src(`${process.cwd()}/node_modules/` + location.replace(/^\//, ''))
+            .pipe(gulp.dest(dest))
+    }
+
 }
 
 const copyNpmList = (prod) => {
     const files = Object.keys(pipeline.npmFiles).map(key => {
-        return () => copyNpm(key, pipeline.npmFiles[key], prod)
+        return () => {
+            const type = pipeline.npmFiles[key]
+
+            if (typeof type === 'string') {
+                return copyNpm(key, pipeline.npmFiles[key], prod)
+            } else {
+                return copyNpm(key, type.type, prod, type.filename)
+            }
+        }
     })
 
     return gulp.parallel(...files)

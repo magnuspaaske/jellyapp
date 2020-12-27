@@ -14,7 +14,6 @@ module.exports.jsFilesToInject = [ // Order of JS files
     'env/**/*.js', // Load env before all else
 
     'dependencies/jquery.js',
-    'dependencies/moment.js',
     'dependencies/lodash.js',
 
     // Load other dependencies/libs
@@ -34,9 +33,13 @@ module.exports.npmFiles = {
     'jquery/dist/jquery.js': 'js',
     // Add lodash
     'lodash/lodash.js': 'js',
-    // Add moment
-    'moment/moment.js': 'js',
     // Add Jellyblocks
     // 'jellyblocks/jellyblocks.js': 'js',
     // 'jellyblocks/jellyblocks.css': 'css',
+    // Font awesome
+    // '@fortawesome/fontawesome-free/css/all.css': {
+    //     type: 'css',
+    //     filename: 'font-awesome'
+    // },
+    // '@fortawesome/fontawesome-free/webfonts/*': 'fonts',
 }
