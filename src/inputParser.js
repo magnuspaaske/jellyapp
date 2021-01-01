@@ -1,13 +1,11 @@
 // Middleware to ensure params are available on req.body and files on req.files
 
-const bodyParser    = require('body-parser')
-const cookieParser  = require('cookie-parser')
-const fileupload    = require('express-fileupload')
-
-
 // TODO: make settings
 
 module.exports = (app) => {
+    const bodyParser    = require('body-parser')
+    const cookieParser  = require('cookie-parser')
+    const fileupload    = require('express-fileupload')
 
     // Handling body
     app.use(bodyParser.urlencoded({

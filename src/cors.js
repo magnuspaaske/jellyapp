@@ -1,11 +1,11 @@
 // Module to allow CORS requests
 
 const _         = require('lodash')
-const cors      = require('cors')
-// TODO: Make settings object to finetune CORS behavior
 
+// TODO: Make settings object to finetune CORS behavior
 module.exports = (app) => {
-    app.use(cors())
+    app.use(require('cors')())
+
     app.use((req, res, next) => {
         const origin = req.headers.origin
 

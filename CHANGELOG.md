@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.5
+- Fixed an issue where a number of dependencies were being required despite not being used when running a static site
+
 ## 0.7.4
 - Updated sessions so only the session id is used to locate sessions
 - Added possibility to add auth definitions in the app/security directory for api.yaml consumption

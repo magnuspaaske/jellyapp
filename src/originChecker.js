@@ -2,6 +2,7 @@
 
 const _ = require('lodash')
 
+// TODO: add settings for redirect etc
 module.exports = (app) => {
     app.use((req, res, next) => {
         // Only do something if origins is set
