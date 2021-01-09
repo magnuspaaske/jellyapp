@@ -20,12 +20,13 @@ const expObj = {
 if (jelly.useFrontend === true) {
     Object.assign(expObj, {
         // Frontend
-        pugFns:             require('./src/pug-fns')
+        pugFns:             require('./src/pug-fns'),
+        useAsset:           require('./src/useAsset'),
     })
 
     if (jelly.frontend.useStatic === true) {
         Object.assign(expObj, {
-            serveStatic:        require('./src/serveStatic')
+            serveStatic:        require('./src/serveStatic'),
         })
     }
 }

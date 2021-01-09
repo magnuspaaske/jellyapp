@@ -56,6 +56,16 @@ if (jellyYaml.useBackend) {
 
 
 // Hook up page routes
+if (jellyYaml.useBackend && jellyYaml.useFrontend) {
+    app.set('views', './views/pages')
+    app.set('view engine', 'pug')
+
+    app.use((req, res, next) => {
+        res.locals.useAsset     = jelly.useAsset
+        next()
+    })
+}
+
 
 
 // Send html if page is static
