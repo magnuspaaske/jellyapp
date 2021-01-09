@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.6
+- Changed frontend build so Coffeescript is handled the same for development and production
+- Added useAsset so fingerprinted images can be used for production from pug
+
 ## 0.7.5
 - Fixed an issue where a number of dependencies were being required despite not being used when running a static site
 
