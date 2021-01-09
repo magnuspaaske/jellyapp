@@ -145,7 +145,7 @@ gulp.task('js-clean', () => {
 gulp.task('coffee-prod', () => {
     return gulp.src('./client/scripts/**/*.coffee')
         .pipe(coffee({
-            bare: true
+            bare: false
         }))
         .pipe(gulp.dest('tmp/scripts/'))
 })
