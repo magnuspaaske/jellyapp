@@ -7,6 +7,7 @@ require('dotenv').config({
 })
 
 const beforeHook    = require('./helpers/beforeHook')
+const afterHook     = require('./helpers/afterHook')
 const User          = require('./helpers/testUserModel')
 
 const app = require('./helpers/testApp')
@@ -18,6 +19,7 @@ const request = () => chai.request(app)
 describe('User', () => {
     const tokens = {}
     before(beforeHook(tokens))
+    after(afterHook)
 
     describe('signup', () => {
         it('using existing email', done => {

@@ -36,6 +36,7 @@ const beforeHook = (tokenObj) => {
             })
             .then(session => tokenObj[handle] = `Bearer ${session.generateToken()}`)
     })))
+    .then(() => knex.destroy())
 }
 
 module.exports = beforeHook
