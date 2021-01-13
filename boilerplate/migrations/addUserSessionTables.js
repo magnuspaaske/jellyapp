@@ -10,6 +10,11 @@ exports.up = (knex) => {
         table.string('password', 1023)
         table.boolean('is_admin').defaultTo(false)
 
+        table.datetime('password_request_time')
+        table.string('password_reset_token').unique()
+        table.boolean('email_confirmed')
+        table.string('email_confirmation_code').unique()
+
         table.timestamps()
     }).then(() => {
         // Sessions

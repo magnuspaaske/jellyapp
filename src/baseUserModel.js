@@ -22,8 +22,10 @@ const baseUserModel = (props, staticProps) => {
             'has_login',
             'password_request_time',
             'password_reset_token',
+            'email_confirmed',
+            'email_confirmation_code',
             'is_admin',
-        ],
+        ].concat(props.hidden || []),
 
         // Set password
         setPassword (new_password) {
