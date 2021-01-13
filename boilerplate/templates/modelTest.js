@@ -19,7 +19,7 @@ const request = chai.request(process.env.PAGE_ORIGIN)
 
 describe('{MODELNAME_CAP}', () => {
     // Uncomment before for the first set of tests and after for the last batch
-    // before(beforeHook())
+    before(beforeHook())
     // after(afterHook)
 
     it('get {MODELNAME_CAP} by id', done => {

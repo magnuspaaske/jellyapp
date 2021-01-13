@@ -6,8 +6,9 @@
 module.exports.cssFilesToInject = [ // Order of CSS files
     // 'dependencies/jellyblocks.css',
     'dependencies/*.css',
-    // All
-    '**/*.css',
+    '*.css',
+    'elements/*.css',
+    'pages/*.css',
 ]
 
 module.exports.jsFilesToInject = [ // Order of JS files
