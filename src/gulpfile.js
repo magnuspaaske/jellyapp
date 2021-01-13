@@ -36,15 +36,8 @@ if (process.env.NODE_ENV === 'development' && fs.existsSync('.env')) {
     }
 }
 
-
 const pipeline = require(`${process.cwd()}/pipeline.js`)
 
-const cssPipeline = pipeline.cssFilesToInject.map(path => {
-    return 'tmp/styles/' + path
-})
-const jsPipeline = pipeline.jsFilesToInject.map(path => {
-    return 'tmp/scripts/' + path
-})
 
 
 // SASS
@@ -257,13 +250,32 @@ gulp.task('pug-link-images', () => {
 
 // Concat
 gulp.task('concat-css', () => {
-    return gulp.src(cssPipeline)
+    return gulp.src(pipeline.cssFilesToInject.map(path => `tmp/styles/${path}`))
         .pipe(concat('styles.css'))
+        .pipe(gulp.dest('./tmp/'))
+})
+gulp.task('concat-css-dev', () => {
+    return gulp.src(pipeline.cssFilesToInject.map(path => `public/styles/${path}`))
+        .pipe(concat('styles.css'))
+        .pipe(gulp.dest('./tmp/'))
+})
+gulp.task('concat-email-css', () => {
+    return gulp.src([
+        'tmp/styles/emails/*.css',
+    ])
+        .pipe(concat('email-styles.css'))
+        .pipe(gulp.dest('./tmp/'))
+})
+gulp.task('concat-email-css-dev', () => {
+    return gulp.src([
+        'public/styles/emails/*.css',
+    ])
+        .pipe(concat('email-styles.css'))
         .pipe(gulp.dest('./tmp/'))
 })
 
 gulp.task('concat-js', () => {
-    return gulp.src(jsPipeline)
+    return gulp.src(pipeline.jsFilesToInject.map(path => `tmp/scripts/${path}`))
         .pipe(concat('scripts.js'))
         .pipe(gulp.dest('./tmp/'))
 })
@@ -392,6 +404,8 @@ gulp.task('default', gulp.series(
     ),
     gulp.series(
         // Linking sheets and styles
+        'concat-css-dev',
+        'concat-email-css-dev',
         'grunt-sails-linker:devCss',
         'grunt-sails-linker:devJs',
         'pug-static',
@@ -403,7 +417,11 @@ gulp.task('default', gulp.series(
             'client/styles/**/*.scss',
             'client/styles/**/*.css',
         ])
-        sassWatch.on('change', gulp.series('make-css'))
+        sassWatch.on('change', gulp.series(
+            'make-css',
+            'concat-css-dev',
+            'concat-email-css-dev',
+        ))
         sassWatch.on('unlink', gulp.series(
             'css-clean',
             'make-css',
@@ -472,6 +490,7 @@ gulp.task('build', gulp.series(
     gulp.parallel(
         'concat-js',
         'concat-css',
+        'concat-email-css',
     ),
     gulp.parallel(
         'grunt-bushcaster:assets',
