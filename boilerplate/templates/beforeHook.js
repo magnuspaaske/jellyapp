@@ -1,5 +1,5 @@
 // test/helpers/beforeHook
-// Resetting database and getting user access tokens
+// Migrating to latest database and seeding database
 
 const knex = require('knex')({
     client: 'pg',
@@ -8,8 +8,10 @@ const knex = require('knex')({
 
 
 const beforeHook = () => {
-    return () => knex.migrate.latest()
+    return () => knex.migrate.rollback()
+        .then(() => knex.migrate.latest())
         .then(() => knex.seed.run())
+        .then(() => knex.destroy())
 }
 
 module.exports = beforeHook

@@ -46,9 +46,14 @@ const addBackend = (withAuth = false) => {
     writeJellyYaml(jellyYaml)
 
     // Set up tests
+    // TODO: use copyFiles for before/after hook
     copyFile({
         originLocation: 'boilerplate/templates/beforeHook.js',
         destinationLocation: 'test/helpers/beforeHook.js',
+    })
+    copyFile({
+        originLocation: 'boilerplate/templates/afterHook.js',
+        destinationLocation: 'test/helpers/afterHook.js',
     })
     copyFile({
         originLocation: 'boilerplate/api-template.yaml',
