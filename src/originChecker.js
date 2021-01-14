@@ -8,11 +8,12 @@ module.exports = (app) => {
         // Only do something if origins is set
         if (!process.env.PAGE_ORIGIN) return next()
 
-        // Split page origin in case there's multiple
-        const origins = process.env.PAGE_ORIGIN.split(/[,,;]/)
 
-        if (!_(origins).includes(`${req.protocol}://${req.get('host')}`)) {
-            return res.redirect(origins[0])
+        if (
+            process.env.NODE_ENV === 'production' &&
+            process.env.PAGE_ORIGIN !== `${req.protocol}://${req.get('host')}`
+        ) {
+            return res.redirect(`${process.env.PAGE_ORIGIN}${req.url}`)
         }
 
         next()
