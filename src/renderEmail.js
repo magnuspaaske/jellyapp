@@ -4,7 +4,6 @@
 const fs        = require('fs')
 const Promise   = require('bluebird')
 
-const inlineCss = require('inline-css')
 const pug       = require('pug')
 const mjml2html = require('mjml')
 
