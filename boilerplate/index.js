@@ -64,6 +64,12 @@ if (jellyYaml.useBackend && jellyYaml.useFrontend) {
         res.locals.useAsset     = jelly.useAsset
         next()
     })
+
+    // Allow us to test emails
+    if (process.env.NODE_ENV === 'development') {
+        // app.use('/test', require('./app/pageControllers/testController'))
+    }
+
 }
 
 

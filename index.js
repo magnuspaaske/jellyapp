@@ -67,4 +67,11 @@ if (jelly.useBackend === true) {
 }
 
 
+if (jelly.useBackend === true && jelly.useFrontend === true) {
+    Object.assign(expObj, {
+        renderEmail:        require('./src/renderEmail')
+    })
+}
+
+
 module.exports = expObj
