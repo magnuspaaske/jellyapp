@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.7
+- Changed so tests stop after running
+- Added email rendering capabilities
+- Changed gulp script so email styles are compiled
+- Changed the way domains are handled so it only enforces the domain on production
+
 ## 0.7.6
 - Changed frontend build so Coffeescript is handled the same for development and production
 - Added useAsset so fingerprinted images can be used for production from pug
