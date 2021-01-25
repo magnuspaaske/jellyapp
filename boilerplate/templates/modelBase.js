@@ -13,5 +13,5 @@ const {
 
 
 module.exports = baseModel('{MODELNAME_CAP}', '{TABLENAME}', {
-    // uuid: true
+    // uuid: true,
 })

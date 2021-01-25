@@ -50,7 +50,7 @@ const transformToPercentage = (num) => {
 }
 
 const formatMoney = (int, {
-    currency        = {code: 'mxn', 'symbol': '$'},
+    currency        = {code: 'usd', 'symbol': '$'},
     decimals        = 2,
     format          = 'precise',
     showCode        = false,

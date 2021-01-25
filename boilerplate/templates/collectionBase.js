@@ -11,8 +11,6 @@ const {
     baseCollection,
 } = require('jellyapp')
 
-module.exports = baseCollection('{MODELNAME_CAP}Collection',
-    require('../models/{MODELNAME_UNCAP}Model'), {
-        // Methods
-    }
-)
+module.exports = baseCollection('{MODELNAME_CAP}Collection', require('../models/{MODELNAME_UNCAP}Model'), {
+    // Methods
+})

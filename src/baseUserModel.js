@@ -7,6 +7,22 @@ const baseModel = require('./baseModel')
 
 
 const baseUserModel = (props, staticProps) => {
+    // Fields that shouldn't be send to the user
+    const hidden = [
+        'password',
+        'has_login',
+        'password_request_time',
+        'password_reset_token',
+        'email_confirmed',
+        'email_confirmation_code',
+        'is_admin',
+    ]
+    if (props.hidden) {
+        props.hidden = props.hidden.concat(hidden)
+    } else {
+        props.hidden = hidden
+    }
+
     const UserModel = baseModel('User', 'users', Object.assign({
         sessions () {
             return this.hasMany('Session')
@@ -15,17 +31,6 @@ const baseUserModel = (props, staticProps) => {
         isAdmin () {
             return this.get('is_admin')
         },
-
-        // Fields that shouldn't be send to the user
-        hidden: [
-            'password',
-            'has_login',
-            'password_request_time',
-            'password_reset_token',
-            'email_confirmed',
-            'email_confirmation_code',
-            'is_admin',
-        ].concat(props.hidden || []),
 
         // Set password
         setPassword (new_password) {
