@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.8
+- Changed currency pug function to default to USD
+– Fixed issue with hidden fields for user models
+
 ## 0.7.7
 - Changed so tests stop after running
 - Added email rendering capabilities

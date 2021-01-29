@@ -29,7 +29,7 @@ const makeUserController = ((User) => {
             'created_at',
             'updated_at',
             'id',
-            ...req.user.hidden
+            ...req.user.hidden,
         ]
 
         return req.user
