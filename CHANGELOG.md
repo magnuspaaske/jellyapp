@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+- Allowed self signed SSL certificates for knex
+- Updated how PAGE_ORIGIN is handled so it correctly redirects on heroku
+
 ## 0.7.8
 - Changed currency pug function to default to USD
 – Fixed issue with hidden fields for user models

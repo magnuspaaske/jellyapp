@@ -8,10 +8,18 @@ module.exports = (app) => {
         // Only do something if origins is set
         if (!process.env.PAGE_ORIGIN) return next()
 
+        let originSplit = process.env.PAGE_ORIGIN.split('://')
+
+        if (originSplit.length === 1) return next()
+
+        const hostMatch = originSplit[1] === req.get('host')
+        const protoMatch = req.headers['x-forwarded-proto'] ?
+            req.headers['x-forwarded-proto'] === originSplit[0] :
+            req.protocol === originSplit[0]
 
         if (
             process.env.NODE_ENV === 'production' &&
-            process.env.PAGE_ORIGIN !== `${req.protocol}://${req.get('host')}`
+            (!hostMatch || !protoMatch)
         ) {
             return res.redirect(`${process.env.PAGE_ORIGIN}${req.url}`)
         }

@@ -2,7 +2,9 @@
 
 let dbConfig = {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+    },
     pool: {
         min: 2,
         max: 10
@@ -10,7 +12,9 @@ let dbConfig = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    dbConfig.connection += '?ssl=true'
+    dbConfig.connection.ssl = {
+        rejectUnauthorized: false
+    }
 }
 
 
