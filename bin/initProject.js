@@ -57,7 +57,7 @@ const initProject = async () => {
         useBackend: _(components).includes('routes')
     }
 
-    fs.writeFileSync(`${process.cwd()}/jelly.yaml`, yaml.safeDump(jellySetup))
+    fs.writeFileSync(`${process.cwd()}/jelly.yaml`, yaml.dump(jellySetup))
 
 
     // Copy boilerplate

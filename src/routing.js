@@ -29,12 +29,12 @@ const swaggerRouting = ({
 
     if (jellySetup.backend.useAuth) {
         swaggerDocument = _.merge(
-            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${authApiLocation}.yaml`, 'utf8')),
-            yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
+            yaml.load(fs.readFileSync(`${process.cwd()}/${authApiLocation}.yaml`, 'utf8')),
+            yaml.load(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
         )
     } else {
         // Read specs
-        swaggerDocument = yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
+        swaggerDocument = yaml.load(fs.readFileSync(`${process.cwd()}/${apiLocation}.yaml`, 'utf8'))
     }
 
     // Test specs
@@ -48,7 +48,7 @@ const swaggerRouting = ({
 
     // Write out full api
     if (jellySetup.backend.useAuth) {
-        fs.writeFileSync(`${process.cwd()}/${combinedApiLocation}.yaml`, yaml.safeDump(swaggerDocument))
+        fs.writeFileSync(`${process.cwd()}/${combinedApiLocation}.yaml`, yaml.dump(swaggerDocument))
     }
 
     // Add route for docs

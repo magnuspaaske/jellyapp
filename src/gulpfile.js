@@ -200,7 +200,7 @@ gulp.task('js-copy-prod', () => {
 const loadData = () => {
     const data = {}
     try {
-        const yamlData = yaml.safeLoad(fs.readFileSync('./client/data.yaml', {
+        const yamlData = yaml.load(fs.readFileSync('./client/data.yaml', {
             encoding: 'utf-8'
         }))
         Object.assign(data, yamlData)

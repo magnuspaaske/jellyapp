@@ -8,7 +8,7 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerServer = (app, route = '/api-docs') => {
     const apiLocation = fs.existsSync('combined-api.yaml') ? 'combined-api' : 'api'
 
-    const swaggerDocument = yaml.safeLoad(fs.readFileSync(`./${apiLocation}.yaml`, 'utf8'))
+    const swaggerDocument = yaml.load(fs.readFileSync(`./${apiLocation}.yaml`, 'utf8'))
     app.use(route, swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 }
 
