@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.2
+- Updated dependencies
+
 ## 0.8.1
 - Allowed self signed SSL certificates for knex
 - Updated how PAGE_ORIGIN is handled so it correctly redirects on heroku
