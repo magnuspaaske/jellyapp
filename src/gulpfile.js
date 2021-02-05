@@ -424,6 +424,7 @@ gulp.task('default', gulp.series(
         ))
         sassWatch.on('unlink', gulp.series(
             'css-clean',
+            'copy-npm-dependencies',
             'make-css',
             'grunt-sails-linker:devCss',
             'pug-static',
