@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.3
+- Updated gulp so npm css is copied over when deleting css files
+- Removed is_admin from hidden on user model
+
 ## 0.8.2
 - Updated dependencies
 
