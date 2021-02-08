@@ -15,7 +15,6 @@ const baseUserModel = (props, staticProps) => {
         'password_reset_token',
         'email_confirmed',
         'email_confirmation_code',
-        'is_admin',
     ]
     if (props.hidden) {
         props.hidden = props.hidden.concat(hidden)
