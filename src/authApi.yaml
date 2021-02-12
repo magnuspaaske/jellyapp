@@ -27,6 +27,26 @@ paths:
         401:
           description: Email already used for user
 
+  /users/make-first-user:
+    post:
+      operationId:  makeFirstUser
+      summary:      Make the first user
+      description:  If `first-user-token` is set as an environment variable, this endpoint allows you to make the first admin user
+      tags:
+        - User
+        - Admin
+      requestBody:
+        $ref: '#/components/requestBodies/userSignin'
+      responses:
+        201:
+          description: New admin created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        501:
+          description: No first-user-token is set as an environment variable
+
   /users/me:
     get:
       operationId:  getCurrentUser
