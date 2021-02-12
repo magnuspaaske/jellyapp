@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.4
+- Updated gulp so npm js is copied over when deleting coffeescript files
+- Added the function to make admin users with a first user token to regular API
+- Made the function to add the first admin user return a status 501 if no first-user-token is provided in environment variables
+
 ## 0.8.3
 - Updated gulp so npm css is copied over when deleting css files
 - Removed is_admin from hidden on user model
