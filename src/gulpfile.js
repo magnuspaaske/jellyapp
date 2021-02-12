@@ -443,6 +443,7 @@ gulp.task('default', gulp.series(
         jsWatch.on('change', gulp.series('make-js'))
         jsWatch.on('unlink', gulp.series(
             'js-clean',
+            'copy-npm-dependencies',
             'make-js',
             'grunt-sails-linker:devJs',
             'pug-static',
