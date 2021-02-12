@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.5
+- Fixed error handling for adding first admin user
+
 ## 0.8.4
 - Updated gulp so npm js is copied over when deleting coffeescript files
 - Added the function to make admin users with a first user token to regular API

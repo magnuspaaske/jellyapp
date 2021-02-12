@@ -134,12 +134,11 @@ const makeUserController = ((User) => {
 
     // Make first user
     controller.makeFirstUser = (req, res, next) => {
+        if (!process.env.FIRST_USER_TOKEN) return res.sendStatus(501)
+
         const firstUserToken = req.headers['first-user-token']
-
-        if (!firstUserToken) return res.sendStatus(501)
-
         if (
-            !process.env.FIRST_USER_TOKEN ||
+            !firstUserToken ||
             firstUserToken !== process.env.FIRST_USER_TOKEN
         ) {
             throw new APIError(403, 'A first user token must be provided or it didn\'t match the server one')

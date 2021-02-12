@@ -31,7 +31,7 @@ paths:
     post:
       operationId:  makeFirstUser
       summary:      Make the first user
-      description:  If `first-user-token` is set as an environment variable, this endpoint allows you to make the first admin user
+      description:  If `first_user_token` is set as an environment variable, this endpoint allows you to make the first admin user. The `first-user-token` must be set as a header for the request to work
       tags:
         - User
         - Admin
