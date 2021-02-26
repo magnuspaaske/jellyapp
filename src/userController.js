@@ -84,10 +84,7 @@ const makeUserController = ((User) => {
             if (user) {
                 throw new APIError(409, 'User already exists with provided email')
             }
-
-            return new User({
-                email: req.body.email
-            }).setPassword(req.body.password)
+            return new User(_.omit(req.body, 'password')).setPassword(req.body.password)
         }).then(user => user.save())
         .then(user => {
             res.status(201)

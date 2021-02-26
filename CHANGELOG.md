@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.6
+- Added a function to require all files in a directory into a single object
+
 ## 0.8.5
 - Fixed error handling for adding first admin user
 

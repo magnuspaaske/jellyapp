@@ -37,6 +37,7 @@ if (jelly.useBackend === true) {
         APIError:           require('./src/apiError'),
 
         checkFieldsExist:   require('./src/checkFieldsExist'),
+        loadDir:            require('./src/loadDir'),
         routing:            require('./src/routing'),
         swaggerServer:      require('./src/swaggerServer'),
 
