@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.7
+- Added subpage functionality so a controller can include another controller for rendering
+
 ## 0.8.6
 - Added a function to require all files in a directory into a single object
 

@@ -39,6 +39,7 @@ if (jelly.useBackend === true) {
         checkFieldsExist:   require('./src/checkFieldsExist'),
         loadDir:            require('./src/loadDir'),
         routing:            require('./src/routing'),
+        subpage:            require('./src/subpage'),
         swaggerServer:      require('./src/swaggerServer'),
 
         // Bookshelf stuff + models/collections (to be extended)
