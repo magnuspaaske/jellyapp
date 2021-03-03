@@ -2,14 +2,15 @@
 
 // TODO: make settings
 
-module.exports = (app) => {
+module.exports = (app, mbLimit = 1) => {
     const bodyParser    = require('body-parser')
     const cookieParser  = require('cookie-parser')
     const fileupload    = require('express-fileupload')
 
     // Handling body
     app.use(bodyParser.urlencoded({
-        extended: false,
+        extended:   false,
+        limit:      `${mbLimit}mb`,
     }))
     app.use(bodyParser.json({
         // Make rawBody available too
@@ -17,7 +18,8 @@ module.exports = (app) => {
             if (buf && buf.length) {
                 req.rawBody = buf.toString(encoding || 'utf8')
             }
-        }
+        },
+        limit:  `${mbLimit}mb`,
     }))
 
     // Handling cookies
@@ -25,9 +27,8 @@ module.exports = (app) => {
 
     // Handling fileupload
     app.use(fileupload({
-        highWaterMark: 2 * 1024 * 1024,
         limits: {
-            fileSize: 10 * 1024 * 1024
+            fileSize: mbLimit * 1024 * 1024
         },
         abortOnLimit: true,
     }))

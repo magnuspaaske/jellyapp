@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.8
+- Added possibility to set the limit for how much data can be received
+
 ## 0.8.7
 - Added subpage functionality so a controller can include another controller for rendering
 

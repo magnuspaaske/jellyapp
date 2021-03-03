@@ -5,6 +5,7 @@ const compression   = require('compression')
 
 const makeApp = ({
     useBackend = require('./jellyYaml').readJellyYaml().useBackend,
+    inputLimit = 1,
 } = {}) => {
     // Make express to extend
     const app = express()
@@ -17,7 +18,7 @@ const makeApp = ({
 
     if (useBackend) {
         // Middleware
-        require('./inputParser')(app)
+        require('./inputParser')(app, inputLimit)
         require('./cors')(app)
         require('./originChecker')(app)
     }
