@@ -30,6 +30,7 @@ const app = jelly.app()
 // Send static files from /public
 app.use(
     require('express').static(__dirname + '/public', {
+        maxAge: process.env.NODE_ENV === 'production' ? 365 * 24 * 60 * 60 * 1000 : 0,
         setHeaders: (res) => {
             res.setHeader('Access-Control-Allow-Origin', '*')
         }

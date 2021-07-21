@@ -61,7 +61,7 @@ const formatMoney = (int, {
 
     let money = ''
 
-    if (showSymbol) money = cur.symbol
+    if (showSymbol) money = `${cur.symbol} `
 
     if (format === 'precise') {
         money += numberToString(Math.floor(int/100))
@@ -82,10 +82,20 @@ const formatMoney = (int, {
 }
 
 
+function getFlagEmoji(countryCode) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+}
+
+
 module.exports = {
     capitalize,
     formatMoney,
     numberToString,
     showdown: new showdown.Converter(),
     transformToPercentage,
+    getFlagEmoji,
 }

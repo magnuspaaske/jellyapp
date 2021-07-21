@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.9
+- Added function to get country emoji from country code
+- Added max age to static files
+
 ## 0.8.8
 - Added possibility to set the limit for how much data can be received
 
