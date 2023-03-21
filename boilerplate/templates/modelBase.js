@@ -4,14 +4,10 @@
  *  Jelly CLI and can safely be edited
  */
 
-
 // app/models/{MODELNAME_UNCAP}Model
 
-const {
-    baseModel
-} = require('jellyapp')
-
+const { baseModel } = require('jellyapp');
 
 module.exports = baseModel('{MODELNAME_CAP}', '{TABLENAME}', {
     // uuid: true,
-})
+});

@@ -1,10 +1,9 @@
 // Replace file references for assets in CSS and JS before building
 
-const replace   = require('replace')
-const fs        = require('fs')
+const replace = require('replace');
+const fs = require('fs');
 
 module.exports = (grunt) => {
-
     grunt.config.set('bushcaster', {
         assets: {
             options: {
@@ -12,38 +11,42 @@ module.exports = (grunt) => {
                 noProcess: true,
                 requirejs: false,
                 onComplete: (rawmap = {}, files) => {
-                    const map = {}
+                    const map = {};
 
                     // Where we update the references
-                    const filesToUpdate = [
-                        'tmp/scripts.js',
-                        'tmp/styles.css',
-                    ]
+                    const filesToUpdate = ['tmp/scripts.js', 'tmp/styles.css'];
 
-                    Object.entries(rawmap).reverse().map((arr) => {
-                        const key = arr[0].replace('../../public/', '/')
-                        const val = arr[1].replace('../../public/', '/')
-                        map[key] = val
+                    Object.entries(rawmap)
+                        .reverse()
+                        .map((arr) => {
+                            const key = arr[0].replace('../../public/', '/');
+                            const val = arr[1].replace('../../public/', '/');
+                            map[key] = val;
 
-                        // Updating reference to asset
-                        replace({
-                            regex:          key,
-                            replacement:    val,
-                            paths:          filesToUpdate,
-                            recursive:      true,
-                            silent:         true,
-                        })
-                    })
+                            // Updating reference to asset
+                            replace({
+                                regex: key,
+                                replacement: val,
+                                paths: filesToUpdate,
+                                recursive: true,
+                                silent: true,
+                            });
+                        });
 
-                    fs.writeFileSync('tmp/assets-hashes.json', JSON.stringify(map))
+                    fs.writeFileSync(
+                        'tmp/assets-hashes.json',
+                        JSON.stringify(map)
+                    );
                 },
             },
-            files: [{
-                expand: true,
-                cwd: './tmp/copies/',
-                src: [ './**/*' ],
-                dest: '../../public/',
-            }],
+            files: [
+                {
+                    expand: true,
+                    cwd: './tmp/copies/',
+                    src: ['./**/*'],
+                    dest: '../../public/',
+                },
+            ],
         },
         prodJs: {
             options: {
@@ -51,12 +54,14 @@ module.exports = (grunt) => {
                 noProcess: true,
                 requirejs: false,
             },
-            files: [{
-                expand: true,
-                cwd: './tmp/',
-                src: [ './scripts.min.js' ],
-                dest: '../public/',
-            }],
+            files: [
+                {
+                    expand: true,
+                    cwd: './tmp/',
+                    src: ['./scripts.min.js'],
+                    dest: '../public/',
+                },
+            ],
         },
         prodCss: {
             options: {
@@ -64,15 +69,16 @@ module.exports = (grunt) => {
                 noProcess: true,
                 requirejs: false,
             },
-            files: [{
-                expand: true,
-                cwd: './tmp/',
-                src: [ './styles.min.css' ],
-                dest: '../public/',
-            }],
+            files: [
+                {
+                    expand: true,
+                    cwd: './tmp/',
+                    src: ['./styles.min.css'],
+                    dest: '../public/',
+                },
+            ],
         },
+    });
 
-    })
-
-    grunt.loadNpmTasks('grunt-bushcaster')
-}
+    grunt.loadNpmTasks('grunt-bushcaster');
+};

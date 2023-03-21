@@ -1,3 +1,3 @@
-const { jellyKnex } = require('jellyapp')
+const { jellyKnex } = require('jellyapp');
 
-module.exports = jellyKnex.knex()
+module.exports = jellyKnex.knex();

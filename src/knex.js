@@ -7,21 +7,20 @@ let dbConfig = {
     },
     pool: {
         min: 2,
-        max: 10
-    }
-}
+        max: 10,
+    },
+};
 
 if (process.env.NODE_ENV === 'production') {
     dbConfig.connection.ssl = {
-        rejectUnauthorized: false
-    }
+        rejectUnauthorized: false,
+    };
 }
-
 
 module.exports = {
-    knex:       () => (dbConfig),
-    setKnex:    (newKnex) => {
-        dbConfig = Object.assign({}, dbConfig, newKnex)
-        return dbConfig
+    knex: () => dbConfig,
+    setKnex: (newKnex) => {
+        dbConfig = Object.assign({}, dbConfig, newKnex);
+        return dbConfig;
     },
-}
+};
