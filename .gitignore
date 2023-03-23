@@ -1,3 +1,4 @@
 node_modules
 test/helpers/.env
 test/helpers/combined-api.yaml
+lib
