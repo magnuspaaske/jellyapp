@@ -9,7 +9,7 @@ const yaml = require('js-yaml');
 
 const gulp = require('gulp');
 const coffee = require('gulp-coffee');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const pug = require('gulp-pug');
 const concat = require('gulp-concat');
 

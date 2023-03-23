@@ -80,6 +80,7 @@ const addClient = (standAlone = false) => {
         'mjml',
         'pug',
         'replace',
+        'sass',
         'showdown',
     ]);
 
