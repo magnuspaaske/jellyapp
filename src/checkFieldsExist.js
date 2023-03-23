@@ -1,13 +1,12 @@
-const _ = require('lodash')
+const _ = require('lodash');
 
 const checkFieldsExist = (fields, obj) => {
-    let exist = true
+    let exist = true;
 
     _(fields).each((field) => {
-        if (!obj[field]) exist = false
+        if (!obj[field]) exist = false;
+    });
+    return exist;
+};
 
-    })
-    return exist
-}
-
-module.exports = checkFieldsExist
+module.exports = checkFieldsExist;

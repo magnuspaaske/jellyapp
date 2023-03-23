@@ -4,25 +4,20 @@
  *  Jelly CLI and can safely be edited
  */
 
-
-const {
-    APIError,
-    baseUserModel,
-} = require('jellyapp')
-
+const { APIError, baseUserModel } = require('jellyapp');
 
 const User = baseUserModel({
     // uuid: true
-})
+});
 
 User.fetchById = (id) => {
     return new User({
-        id
+        id,
     })
         .fetch()
         .catch(() => {
-            throw new APIError(404, 'User not found')
-        })
-}
+            throw new APIError(404, 'User not found');
+        });
+};
 
-module.exports = User
+module.exports = User;

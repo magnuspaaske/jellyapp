@@ -1,25 +1,14 @@
 // Set up backend for a project
 
-const setupUsersSessions = require('./setupUsersSessions')
+const setupUsersSessions = require('./setupUsersSessions');
 
-const {
-    copyFile,
-    copyFiles,
-} = require('./copyFileToProject')
-const {
-    installYarnDeps,
-    updatePkgScripts,
-} = require('./util')
-const {
-    readJellyYaml,
-    writeJellyYaml,
-} = require('../src/jellyYaml')
-
+const { copyFile, copyFiles } = require('./copyFileToProject');
+const { installYarnDeps, updatePkgScripts } = require('./util');
+const { readJellyYaml, writeJellyYaml } = require('../src/jellyYaml');
 
 const addBackend = (withAuth = false) => {
-
     // Install
-    console.log('Installing yarn dependencies for backend ...')
+    console.log('Installing yarn dependencies for backend ...');
     installYarnDeps([
         'bcrypt',
         'bookshelf',
@@ -35,32 +24,32 @@ const addBackend = (withAuth = false) => {
         'swagger-parser',
         'swagger-routes-express',
         'swagger-ui-express',
-    ])
+    ]);
 
     updatePkgScripts({
-        migrate:    'knex migrate:latest',
-    })
+        migrate: 'knex migrate:latest',
+    });
 
-    const jellyYaml = readJellyYaml()
-    jellyYaml.useBackend = true
-    writeJellyYaml(jellyYaml)
+    const jellyYaml = readJellyYaml();
+    jellyYaml.useBackend = true;
+    writeJellyYaml(jellyYaml);
 
     // Set up tests
     // TODO: use copyFiles for before/after hook
     copyFile({
         originLocation: 'boilerplate/templates/beforeHook.js',
         destinationLocation: 'test/helpers/beforeHook.js',
-    })
+    });
     copyFile({
         originLocation: 'boilerplate/templates/afterHook.js',
         destinationLocation: 'test/helpers/afterHook.js',
-    })
+    });
     copyFile({
         originLocation: 'boilerplate/api-template.yaml',
         destinationLocation: 'api.yaml',
-    })
+    });
 
-    if (withAuth) setupUsersSessions()
-}
+    if (withAuth) setupUsersSessions();
+};
 
-module.exports = addBackend
+module.exports = addBackend;

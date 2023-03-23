@@ -1,26 +1,24 @@
 // src/renderEmail
 // A service to render an email before sending it. CSS is automatically inlined
 
-const fs        = require('fs')
-const Promise   = require('bluebird')
+const fs = require('fs');
+const Promise = require('bluebird');
 
-const pug       = require('pug')
-const mjml2html = require('mjml')
+const pug = require('pug');
+const mjml2html = require('mjml');
 
 // pug Fns for locals
-const pugFns = require('./pug-fns')
-
+const pugFns = require('./pug-fns');
 
 const renderEmail = async (template, locals) => {
-    const tmp = pug.compileFile(`${process.cwd()}/views/emails/${template}.pug`)
-    const mjml = await tmp(Object.assign({}, pugFns, locals))
+    const tmp = pug.compileFile(
+        `${process.cwd()}/views/emails/${template}.pug`
+    );
+    const mjml = await tmp(Object.assign({}, pugFns, locals));
 
-    const rawHtml = mjml2html(mjml, {
+    const rawHtml = mjml2html(mjml, {}).html;
 
-    }).html
+    return rawHtml;
+};
 
-    return rawHtml
-}
-
-
-module.exports = renderEmail
+module.exports = renderEmail;

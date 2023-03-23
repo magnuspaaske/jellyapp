@@ -1,13 +1,13 @@
 // The main bookshelf object for use throughout project
 
-const jellyKnex = require('./knex')
+const jellyKnex = require('./knex');
 
-const dbConfig = jellyKnex.knex()
+const dbConfig = jellyKnex.knex();
 
-const knex = require('knex')(dbConfig)
-const bookshelf = require('bookshelf')(knex)
+const knex = require('knex')(dbConfig);
+const bookshelf = require('bookshelf')(knex);
 
 // TODO: Add more options for setting up bookshelf
-bookshelf.plugin(require('bookshelf-uuid'))
+bookshelf.plugin(require('bookshelf-uuid'));
 
-module.exports = bookshelf
+module.exports = bookshelf;

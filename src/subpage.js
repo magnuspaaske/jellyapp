@@ -2,24 +2,24 @@
 // Functionality so a subpage can be rendered inside the rendering of a main page
 
 getSubpage = async (subpageFn, req, res, next) => {
-    let producedHtml
+    let producedHtml;
 
     const subres = Object.assign({}, res, {
         render: async (file, locals) => {
-            const usedLocals = Object.assign({}, res.locals, locals)
+            const usedLocals = Object.assign({}, res.locals, locals);
             const html = await new Promise((resolve, reject) => {
                 res.render(file, usedLocals, (err, html) => {
-                    if (err) throw err
-                    resolve(html)
-                })
-            })
-            producedHtml = html
-        }
-    })
+                    if (err) throw err;
+                    resolve(html);
+                });
+            });
+            producedHtml = html;
+        },
+    });
 
-    await subpageFn(req, subres, next)
+    await subpageFn(req, subres, next);
 
-    return producedHtml
-}
+    return producedHtml;
+};
 
-module.exports = getSubpage
+module.exports = getSubpage;

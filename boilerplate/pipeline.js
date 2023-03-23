@@ -1,17 +1,19 @@
 /**
-  * Pipeline defines the order CSS and JS will be concatenated or loaded when
-  * building the frontend
-  */
+ * Pipeline defines the order CSS and JS will be concatenated or loaded when
+ * building the frontend
+ */
 
-module.exports.cssFilesToInject = [ // Order of CSS files
+module.exports.cssFilesToInject = [
+    // Order of CSS files
     // 'dependencies/jellyblocks.css',
     'dependencies/*.css',
     '*.css',
     'elements/*.css',
     'pages/*.css',
-]
+];
 
-module.exports.jsFilesToInject = [ // Order of JS files
+module.exports.jsFilesToInject = [
+    // Order of JS files
     'env/**/*.js', // Load env before all else
 
     'dependencies/jquery.js',
@@ -25,7 +27,7 @@ module.exports.jsFilesToInject = [ // Order of JS files
     // Load misc so stuff can be loaded in there
     'main.js',
     '**/*.js',
-]
+];
 
 // NPM Files are files loaded from installed NPM modules. They end up in the
 //  "dependencies" folder
@@ -43,4 +45,4 @@ module.exports.npmFiles = {
     //     filename: 'font-awesome'
     // },
     // '@fortawesome/fontawesome-free/webfonts/*': 'fonts',
-}
+};

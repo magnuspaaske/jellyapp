@@ -4,13 +4,14 @@
  *  Jelly CLI and can safely be edited
  */
 
-
 // app/collections/{MODELNAME_UNCAP}Collection
 
-const {
-    baseCollection,
-} = require('jellyapp')
+const { baseCollection } = require('jellyapp');
 
-module.exports = baseCollection('{MODELNAME_CAP}Collection', require('../models/{MODELNAME_UNCAP}Model'), {
-    // Methods
-})
+module.exports = baseCollection(
+    '{MODELNAME_CAP}Collection',
+    require('../models/{MODELNAME_UNCAP}Model'),
+    {
+        // Methods
+    }
+);

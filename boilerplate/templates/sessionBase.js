@@ -4,11 +4,10 @@
  *  Jelly CLI and can safely be edited
  */
 
-
 // app/models/sessionModel - handling the sessions
 
-const { baseSessionModel } = require('jellyapp')
+const { baseSessionModel } = require('jellyapp');
 
 module.exports = baseSessionModel({
     // uuid: true
-})
+});

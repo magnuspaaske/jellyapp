@@ -1,58 +1,58 @@
 #!/usr/bin/env node
 
 // const _ = require('lodash')
-require('colors')
+require('colors');
 
-const fs = require('fs')
+const fs = require('fs');
 
-const commander = require('commander')
+const commander = require('commander');
 
-const addBackend = require('./addBackend')
-const addClient = require('./addClient')
-const addModel = require('./addModel')
-const setupUsersSessions = require('./setupUsersSessions')
-const initProject = require('./initProject')
+const addBackend = require('./addBackend');
+const addClient = require('./addClient');
+const addModel = require('./addModel');
+const setupUsersSessions = require('./setupUsersSessions');
+const initProject = require('./initProject');
 
-const pkg = require('../package.json')
+const pkg = require('../package.json');
 
-commander.version(pkg.version)
-
+commander.version(pkg.version);
 
 commander
     .command('init <folder>')
     .description('Sets up a basic project')
     .action((folder) => {
-        console.log('Setting up a Jelly Project')
+        console.log('Setting up a Jelly Project');
         // Switch folder
         if (folder === '.') {
-            initProject()
+            initProject();
         } else if (fs.existsSync(`./${folder}`)) {
-            console.log(`./${folder} folder already exists`.red)
+            console.log(`./${folder} folder already exists`.red);
         } else {
-            fs.mkdirSync(`./${folder}`)
-                process.chdir(`./${folder}`)
-            console.log('current folder')
-            console.log(process.cwd())
-            initProject()
+            fs.mkdirSync(`./${folder}`);
+            process.chdir(`./${folder}`);
+            console.log('current folder');
+            console.log(process.cwd());
+            initProject();
         }
-
-    })
-
+    });
 
 commander
     .command('addClient')
     .alias('addFrontend')
     .description('Adds a frontend to a project')
-    .option('--stand-alone', 'use jelly to set up a stand alone frontend', false)
+    .option(
+        '--stand-alone',
+        'use jelly to set up a stand alone frontend',
+        false
+    )
     .action((opts) => {
         if (opts.standAlone) {
-            console.log('Setting up stand alone client')
+            console.log('Setting up stand alone client');
         } else {
-            console.log('Setting up frontend for project')
+            console.log('Setting up frontend for project');
         }
-        addClient(opts.standAlone)
-    })
-
+        addClient(opts.standAlone);
+    });
 
 commander
     .command('addBackend')
@@ -60,37 +60,34 @@ commander
     .option('--use-auth', 'use the authentication module', false)
     .action((opts) => {
         if (opts.useAuth) {
-            console.log('Setting up backend with authentication system')
+            console.log('Setting up backend with authentication system');
         } else {
-            console.log('Setting up backend')
+            console.log('Setting up backend');
         }
-        addBackend(opts.useAuth)
-    })
-
+        addBackend(opts.useAuth);
+    });
 
 commander
     .command('addUserSessions')
     .description('Adds everything needed for adding users and sessions')
     .action(() => {
-        console.log('Creating migration for user and session tables')
-        setupUsersSessions()
-    })
-
+        console.log('Creating migration for user and session tables');
+        setupUsersSessions();
+    });
 
 commander
     .command('addModel <modelName>')
     .alias('makeModel')
     .description('Adding a model to the project')
-    .option('--no-crud', 'don\'t add controller to new model', false)
+    .option('--no-crud', "don't add controller to new model", false)
     .option('--plural <plural>', 'name for plural version of model', null)
     .action((modelName, opts) => {
-        console.log(`Adding model: ${modelName}`)
+        console.log(`Adding model: ${modelName}`);
         addModel({
             modelName,
             pluralName: opts.plural,
             controller: opts.crud,
-        })
-    })
+        });
+    });
 
-
-commander.parse(process.argv)
+commander.parse(process.argv);

@@ -1,24 +1,14 @@
 // Set up a client for a project
 
-const fs =          require('fs')
-const yaml =        require('js-yaml')
+const fs = require('fs');
+const yaml = require('js-yaml');
 
-const {
-    copyFile,
-    copyFiles,
-} = require('./copyFileToProject')
-const {
-    installYarnDeps,
-    updatePkgScripts,
-} = require('./util')
-const {
-    readJellyYaml,
-    writeJellyYaml,
-} = require('../src/jellyYaml')
-
+const { copyFile, copyFiles } = require('./copyFileToProject');
+const { installYarnDeps, updatePkgScripts } = require('./util');
+const { readJellyYaml, writeJellyYaml } = require('../src/jellyYaml');
 
 const addClient = (standAlone = false) => {
-    console.log('Copying boilerplate for frontend ...')
+    console.log('Copying boilerplate for frontend ...');
 
     // Copying main files
 
@@ -28,51 +18,47 @@ const addClient = (standAlone = false) => {
             'scripts/main.coffee',
             'styles/general.sass',
         ].map((f) => `client/${f}`),
-    })
+    });
     copyFiles({
-        files: ['pipeline.js']
-    })
+        files: ['pipeline.js'],
+    });
 
-    const layoutFiles = [
-        'footer-js',
-        'header-styles',
-        'layout',
-    ].map((f) => `layouts/${f}.pug`)
+    const layoutFiles = ['footer-js', 'header-styles', 'layout'].map(
+        (f) => `layouts/${f}.pug`
+    );
 
-    console.log('Adding client files ...')
+    console.log('Adding client files ...');
 
     if (standAlone) {
         // Put layout in the client folder etc
         copyFiles({
             files: layoutFiles,
             settings: {
-                root: 'client'
-            }
-        })
+                root: 'client',
+            },
+        });
         copyFiles({
-            files: [
-                'client/root_files/_redirects'
-            ]
-        })
+            files: ['client/root_files/_redirects'],
+        });
         copyFile({
             originLocation: 'boilerplate/pages/home.pug',
             destinationLocation: 'client/static_pug/index.pug',
-        })
+        });
     } else {
         // Put layout + templates in special folders for that
         copyFiles({
             files: layoutFiles,
             settings: {
-                root: 'views'
+                root: 'views',
             },
-        })
+        });
         copyFile({
             originLocation: 'boilerplate/pages/home.pug',
             destinationLocation: 'views/pages/home.pug',
-        })
+        });
     }
 
-    console.log('Installing yarn dependencies for frontend ...')
+    console.log('Installing yarn dependencies for frontend ...');
     installYarnDeps([
         '@sendgrid/mail',
         'grunt',
@@ -94,24 +80,26 @@ const addClient = (standAlone = false) => {
         'mjml',
         'pug',
         'replace',
+        'sass',
         'showdown',
-    ])
+    ]);
 
     // Update package scripts
-    const gulpScript = 'gulp --gulpfile ./node_modules/jellyapp/src/gulpfile.js --cwd .'
+    const gulpScript =
+        'gulp --gulpfile ./node_modules/jellyapp/src/gulpfile.js --cwd .';
     updatePkgScripts({
-        'dev-fe':       `export NODE_ENV=development && yarn delete-tmp && ${gulpScript}`,
-        'build':        `export NODE_ENV=production && yarn delete-tmp && ${gulpScript} build`,
-        'delete-tmp':   'rm -rf public tmp'
-    })
+        'dev-fe': `export NODE_ENV=development && yarn delete-tmp && ${gulpScript}`,
+        build: `export NODE_ENV=production && yarn delete-tmp && ${gulpScript} build`,
+        'delete-tmp': 'rm -rf public tmp',
+    });
 
     // Update jelly.yaml
-    const jellyYaml = readJellyYaml()
-    jellyYaml.useFrontend = true
+    const jellyYaml = readJellyYaml();
+    jellyYaml.useFrontend = true;
     jellyYaml.frontend = {
-        useStatic: standAlone
-    }
-    writeJellyYaml(jellyYaml)
-}
+        useStatic: standAlone,
+    };
+    writeJellyYaml(jellyYaml);
+};
 
-module.exports = addClient
+module.exports = addClient;
